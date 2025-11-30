@@ -55,9 +55,10 @@
                     <a href="faq.html" class="sm:hidden block text-blue-600 font-bold py-4 underline">Ver instruções de uso</a>
                 </div>
             </div>
+            
             <div class="md:w-1/2 relative flex justify-center">
                 <div class="absolute inset-0 bg-blue-200 rounded-full blur-3xl opacity-30 animate-pulse"></div>
-                <div class="bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 w-full max-w-sm relative z-10">
+                <div class="bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 w-full max-w-sm relative z-10 transform rotate-1 hover:rotate-0 transition duration-500">
                     <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
                         <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600"><i data-lucide="package"></i></div>
                         <div>
@@ -80,16 +81,40 @@
     <div id="auth-screen" class="hidden min-h-screen flex items-center justify-center p-4 bg-slate-100 fade-enter fixed inset-0 z-50 overflow-y-auto">
         <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md relative my-8">
             <button onclick="voltarInicio()" class="absolute top-6 left-6 text-slate-400 hover:text-slate-600"><i data-lucide="arrow-left"></i></button>
+            
             <div class="text-center mb-8 mt-2">
                 <h2 class="text-2xl font-bold text-slate-800">Bem-vindo</h2>
                 <p class="text-slate-500 text-sm">Acesse sua conta para continuar</p>
             </div>
+            
             <div class="space-y-4">
-                <input type="email" id="email" placeholder="E-mail" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input type="password" id="password" placeholder="Senha" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div>
+                    <input type="email" id="email" placeholder="E-mail" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                </div>
+                <div>
+                    <input type="password" id="password" placeholder="Senha" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                </div>
+                
                 <div id="signup-fields" class="hidden space-y-4 pt-2 border-t border-slate-100 fade-enter">
-                    <input type="text" id="nome" placeholder="Nome da Empresa" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                    <input type="text" id="nome" placeholder="Nome da Empresa/Pessoa" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
                     <input type="tel" id="whatsapp" placeholder="WhatsApp (DDD + Número)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                    
+                    <!-- SELETOR PF / PJ -->
+                    <div class="flex gap-4 px-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="tipoPessoa" value="pf" checked onchange="toggleDocInput()" class="accent-blue-600 w-4 h-4">
+                            <span class="text-sm font-bold text-slate-600">Pessoa Física (CPF)</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="tipoPessoa" value="pj" onchange="toggleDocInput()" class="accent-blue-600 w-4 h-4">
+                            <span class="text-sm font-bold text-slate-600">Jurídica (CNPJ)</span>
+                        </label>
+                    </div>
+
+                    <!-- Inputs de Documento -->
+                    <input type="tel" id="cpfInput" placeholder="Digite seu CPF" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                    <input type="tel" id="cnpjInput" placeholder="Digite seu CNPJ" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl hidden">
+
                     <div class="relative">
                         <select id="tipoUser" class="w-full p-4 bg-white border border-slate-200 rounded-xl appearance-none text-slate-600">
                             <option value="fornecedor">Sou Fornecedor (Vender)</option>
@@ -98,8 +123,10 @@
                         <i data-lucide="chevron-down" class="absolute right-4 top-4 text-slate-400 w-5 h-5 pointer-events-none"></i>
                     </div>
                 </div>
+
                 <button id="btn-action" onclick="login()" class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition active:scale-95">Entrar</button>
             </div>
+            
             <p class="text-center mt-6 text-sm text-slate-500">
                 <button onclick="toggleAuthMode()" id="msg-toggle" class="text-blue-600 font-bold hover:underline">Criar nova conta</button>
             </p>
@@ -122,14 +149,14 @@
         </header>
 
         <main class="container mx-auto px-4 max-w-2xl mt-6 flex-grow">
-            <!-- ALERTA DE ÍNDICE (Aparece se faltar configuração no Firebase) -->
+            <!-- Alerta de Índice -->
             <div id="index-alert" class="hidden bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
                 <div class="flex">
                     <div class="flex-shrink-0"><i data-lucide="alert-triangle" class="text-yellow-400"></i></div>
                     <div class="ml-3">
                         <p class="text-sm text-yellow-700">
-                            <strong>Atenção Admin:</strong> O filtro de ofertas requer um índice no Firestore. 
-                            <br>Abra o Console do navegador (F12) e clique no link gerado pelo Firebase para criar o índice automaticamente.
+                            <strong>Atenção Admin:</strong> Para ver as ofertas enviadas, é necessário criar um índice no Firebase.
+                            <br>Abra o Console do navegador (F12), procure o erro vermelho e clique no link para criar.
                         </p>
                     </div>
                 </div>
@@ -156,7 +183,9 @@
                     <h2 id="form-title" class="font-bold text-slate-800 mb-3 flex items-center gap-2">
                         <i data-lucide="plus-circle" class="text-blue-600 w-5 h-5"></i> Novo Pedido
                     </h2>
+                    
                     <input type="hidden" id="edit-id" value="">
+
                     <div class="grid grid-cols-3 gap-3 mb-3">
                         <div class="col-span-2">
                             <input type="text" id="produtoInput" placeholder="Ex: 10kg Arroz" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none">
@@ -171,11 +200,17 @@
                             </select>
                         </div>
                     </div>
+                    
                     <div class="flex gap-2">
-                        <button id="btn-save-pedido" onclick="salvarPedido()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/20">Publicar Pedido</button>
-                        <button id="btn-cancel-edit" onclick="cancelarEdicao()" class="hidden px-4 py-3 bg-slate-100 text-slate-500 rounded-xl font-bold hover:bg-slate-200">Cancelar</button>
+                        <button id="btn-save-pedido" onclick="salvarPedido()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/20">
+                            Publicar Pedido
+                        </button>
+                        <button id="btn-cancel-edit" onclick="cancelarEdicao()" class="hidden px-4 py-3 bg-slate-100 text-slate-500 rounded-xl font-bold hover:bg-slate-200">
+                            Cancelar
+                        </button>
                     </div>
                 </div>
+                
                 <div id="lista-gerente" class="space-y-4 pb-10"></div>
             </div>
 
@@ -185,16 +220,33 @@
                     <button onclick="mudarAbaForn('oportunidades')" id="tab-oportunidades" class="flex-1 py-2 rounded-lg text-sm font-bold bg-white shadow-sm text-blue-900 transition">Oportunidades</button>
                     <button onclick="mudarAbaForn('minhas')" id="tab-minhas" class="flex-1 py-2 rounded-lg text-sm font-bold text-slate-500 hover:text-slate-700 transition">Minhas Ofertas</button>
                 </div>
+
                 <div id="lista-fornecedor-todos" class="space-y-4 pb-10"></div>
                 <div id="lista-fornecedor-minhas" class="hidden space-y-4 pb-10"></div>
             </div>
+
         </main>
     </div>
+
+    <!-- RODAPÉ PROFISSIONAL -->
+    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+            <div>
+                <h4 class="font-bold text-slate-800">CotaçãoJá</h4>
+                <p class="text-xs text-slate-500 mt-1">Simplificando o comércio local.</p>
+                <a href="faq.html" class="text-xs text-blue-600 underline mt-2 block">Central de Ajuda</a>
+            </div>
+            
+            <div class="text-sm font-medium">
+                Desenvolvido por <a href="https://lucianodevfrontend.netlify.app/" target="_blank" class="text-blue-600 hover:text-blue-800 font-bold hover:underline transition">SantosCodes</a>
+            </div>
+        </div>
+    </footer>
 
     <!-- LOGICA E FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, setDoc, getDoc, updateDoc, deleteDoc, increment, serverTimestamp, collectionGroup, where } 
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, setDoc, getDoc, updateDoc, deleteDoc, increment, serverTimestamp, collectionGroup, where, writeBatch } 
         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -219,109 +271,228 @@
         const initIcons = () => lucide.createIcons();
         window.addEventListener('load', initIcons);
 
-        // --- PWA INSTALL ---
+        // --- PWA INSTALL LOGIC ---
         let deferredPrompt;
         const btnInstall = document.getElementById('btn-install-app');
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; btnInstall.classList.remove('hidden'); });
-        btnInstall.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') btnInstall.classList.add('hidden'); deferredPrompt = null; } });
-        if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Erro', err));
 
-        // NAVEGAÇÃO
-        window.mostrarLogin = () => { document.getElementById('landing-screen').classList.add('hidden'); document.getElementById('auth-screen').classList.remove('hidden'); btnInstall.classList.add('hidden'); }
-        window.voltarInicio = () => { document.getElementById('auth-screen').classList.add('hidden'); document.getElementById('landing-screen').classList.remove('hidden'); if (deferredPrompt) btnInstall.classList.remove('hidden'); }
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            btnInstall.classList.remove('hidden');
+        });
 
-        // AUTH
+        btnInstall.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    btnInstall.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        // REGISTER SERVICE WORKER
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+            .then(reg => {
+                console.log('SW Registrado!', reg);
+                // Escutar mudanças de estado do SW para reload se necessário
+                reg.onupdatefound = () => {
+                    const installingWorker = reg.installing;
+                    installingWorker.onstatechange = () => {
+                        if (installingWorker.state === 'installed') {
+                            if (navigator.serviceWorker.controller) {
+                                console.log('Novo conteúdo disponível; por favor atualize.');
+                            } else {
+                                console.log('Conteúdo em cache para uso offline.');
+                            }
+                        }
+                    };
+                };
+            })
+            .catch(err => console.log('SW Falhou!', err));
+        }
+
+        // --- NAVEGAÇÃO E UI ---
+        
+        // Controle do Toggle CPF/CNPJ
+        window.toggleDocInput = () => {
+            const isPf = document.querySelector('input[name="tipoPessoa"]:checked').value === 'pf';
+            const cpfInput = document.getElementById('cpfInput');
+            const cnpjInput = document.getElementById('cnpjInput');
+            
+            if (isPf) {
+                cpfInput.classList.remove('hidden');
+                cnpjInput.classList.add('hidden');
+            } else {
+                cpfInput.classList.add('hidden');
+                cnpjInput.classList.remove('hidden');
+            }
+        }
+
+        window.mostrarLogin = () => {
+            document.getElementById('landing-screen').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('hidden');
+            btnInstall.classList.add('hidden');
+        }
+        window.voltarInicio = () => {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('landing-screen').classList.remove('hidden');
+            if (deferredPrompt) btnInstall.classList.remove('hidden');
+        }
+
+        // --- AUTH ---
         let isLoginMode = true;
         window.toggleAuthMode = () => {
             isLoginMode = !isLoginMode;
             const fields = document.getElementById('signup-fields');
             const btn = document.getElementById('btn-action');
             const msg = document.getElementById('msg-toggle');
-            if(!isLoginMode) { fields.classList.remove('hidden'); btn.innerText = "Criar Conta"; btn.onclick = cadastrar; msg.innerText = "Já tenho conta"; } 
-            else { fields.classList.add('hidden'); btn.innerText = "Entrar"; btn.onclick = login; msg.innerText = "Criar nova conta"; }
+            
+            if(!isLoginMode) {
+                fields.classList.remove('hidden');
+                btn.innerText = "Criar Conta Grátis";
+                btn.onclick = cadastrar;
+                msg.innerText = "Já tenho conta";
+            } else {
+                fields.classList.add('hidden');
+                btn.innerText = "Entrar";
+                btn.onclick = login;
+                msg.innerText = "Criar nova conta";
+            }
         }
 
         window.cadastrar = async () => {
-            const email = document.getElementById('email').value; const pass = document.getElementById('password').value;
-            const nome = document.getElementById('nome').value; const tipo = document.getElementById('tipoUser').value;
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            const nome = document.getElementById('nome').value;
+            const tipo = document.getElementById('tipoUser').value;
+            
+            // Tratamento Whatsapp
             let zap = document.getElementById('whatsapp').value.replace(/\D/g, '');
-            if(!email || !pass || !nome || !zap) return alert("Preencha todos os campos");
             if(zap.length >= 10 && !zap.startsWith('55')) zap = '55' + zap;
-            try { const cred = await createUserWithEmailAndPassword(auth, email, pass); await setDoc(doc(db, "users", cred.user.uid), { nome, tipo, whatsapp: zap, email }); } catch (e) { alert("Erro: " + e.message); }
+
+            // Tratamento CPF/CNPJ
+            const tipoPessoa = document.querySelector('input[name="tipoPessoa"]:checked').value;
+            let docNum = '';
+            
+            if (tipoPessoa === 'pf') {
+                docNum = document.getElementById('cpfInput').value.replace(/\D/g, '');
+                if (docNum.length !== 11) return alert("CPF inválido (deve ter 11 dígitos)");
+            } else {
+                docNum = document.getElementById('cnpjInput').value.replace(/\D/g, '');
+                if (docNum.length !== 14) return alert("CNPJ inválido (deve ter 14 dígitos)");
+            }
+            
+            if(!email || !pass || !nome || !zap || !docNum) return alert("Preencha todos os campos");
+            
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, "users", cred.user.uid), { 
+                    nome, tipo, whatsapp: zap, email, 
+                    tipoPessoa, documento: docNum 
+                });
+            } catch (e) { alert("Erro: " + e.message); }
         }
 
-        window.login = async () => { try { await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value); } catch (e) { alert("Login inválido."); } }
+        window.login = async () => {
+            try {
+                await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value);
+            } catch (e) { alert("Login inválido."); }
+        }
         window.logout = () => signOut(auth);
 
+        // --- STATE MANAGER ---
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                document.getElementById('landing-screen').classList.add('hidden'); document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('app-screen').classList.remove('hidden'); document.getElementById('app-screen').classList.add('flex');
+                document.getElementById('landing-screen').classList.add('hidden');
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('app-screen').classList.remove('hidden');
+                document.getElementById('app-screen').classList.add('flex');
                 btnInstall.classList.add('hidden');
+
                 const userDoc = await getDoc(doc(db, "users", user.uid));
                 if (userDoc.exists()) {
-                    currentUserData = userDoc.data(); currentUserData.uid = user.uid;
+                    currentUserData = userDoc.data();
+                    currentUserData.uid = user.uid;
                     document.getElementById('user-display').innerText = `${currentUserData.nome} • ${currentUserData.tipo.toUpperCase()}`;
                     iniciarApp(currentUserData.tipo);
                 }
             } else {
-                document.getElementById('app-screen').classList.add('hidden'); document.getElementById('app-screen').classList.remove('flex');
-                document.getElementById('auth-screen').classList.add('hidden'); document.getElementById('landing-screen').classList.remove('hidden');
-                if (deferredPrompt) btnInstall.classList.remove('hidden'); currentUserData = null;
+                document.getElementById('app-screen').classList.add('hidden');
+                document.getElementById('app-screen').classList.remove('flex');
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('landing-screen').classList.remove('hidden');
+                if (deferredPrompt) btnInstall.classList.remove('hidden');
+                currentUserData = null;
             }
         });
 
-        // APP CORE
+        // --- APP CORE ---
         function iniciarApp(tipo) {
             const pedidosRef = collection(db, "pedidos");
             const q = query(pedidosRef, orderBy("createdAt", "desc"));
+
             document.getElementById('view-gerente').classList.add('hidden');
             document.getElementById('view-fornecedor').classList.add('hidden');
 
-            // 1. Ouvinte dos Pedidos (Sempre ativo)
+            // 1. LISTENER DE PEDIDOS (Sempre Ativo)
             onSnapshot(q, (snapshot) => {
                 allPedidos = [];
                 snapshot.forEach(doc => allPedidos.push({ id: doc.id, ...doc.data() }));
-                if (tipo === 'gerente') renderGerente();
-                else renderFornecedorOportunidades();
+                
+                if (tipo === 'gerente') {
+                    renderGerente();
+                } else {
+                    renderFornecedorOportunidades();
+                }
             });
 
             if (tipo === 'gerente') {
                 document.getElementById('view-gerente').classList.remove('hidden');
             } else {
                 document.getElementById('view-fornecedor').classList.remove('hidden');
-                // 2. Ouvinte das Minhas Ofertas (CRUCIAL PARA FEEDBACK)
+                // 2. LISTENER DE MINHAS OFERTAS (Essencial para pintar de verde o que já foi ofertado)
                 const myOffersQ = query(collectionGroup(db, 'ofertas'), where('fornecedorId', '==', currentUserData.uid));
                 
                 onSnapshot(myOffersQ, (snap) => {
                     myOffers = [];
                     snap.forEach(d => myOffers.push({ id: d.id, path: d.ref.path, ...d.data() }));
                     
-                    // RE-RENDERIZA AMBAS AS LISTAS PARA ATUALIZAR STATUS VISUAL
+                    // RE-RENDERIZA PARA ATUALIZAR STATUS VISUAL
                     renderFornecedorMinhas();
-                    renderFornecedorOportunidades(); 
+                    renderFornecedorOportunidades();
                 }, (error) => {
-                    console.error("Erro no Index:", error);
-                    // Se der erro de índice, mostra alerta
-                    if (error.code === 'failed-precondition') {
-                        document.getElementById('index-alert').classList.remove('hidden');
-                    }
+                    console.error("Erro Index:", error);
+                    if (error.code === 'failed-precondition') document.getElementById('index-alert').classList.remove('hidden');
                 });
             }
         }
 
-        window.aplicarFiltro = () => { if (currentUserData.tipo === 'gerente') renderGerente(); else renderFornecedorOportunidades(); }
+        // --- FILTROS ---
+        window.aplicarFiltro = () => {
+            if (currentUserData.tipo === 'gerente') renderGerente();
+            else renderFornecedorOportunidades();
+        }
+
         function filtrarDados(lista) {
             const categ = document.getElementById('filtro-categoria').value;
             if (categ === 'todos') return lista;
             return lista.filter(item => item.categoria === categ);
         }
 
-        // --- RENDERIZADORES ---
+        // --- RENDER GERENTE ---
         function renderGerente() {
-            const container = document.getElementById('lista-gerente'); container.innerHTML = '';
+            const container = document.getElementById('lista-gerente');
+            container.innerHTML = '';
             const filtrados = filtrarDados(allPedidos);
-            if(filtrados.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 py-10">Nenhum pedido encontrado.</div>'; return; }
+
+            if(filtrados.length === 0) {
+                container.innerHTML = '<div class="text-center text-slate-400 py-10">Nenhum pedido encontrado.</div>';
+                return;
+            }
+
             filtrados.forEach(data => {
                 container.innerHTML += `
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition relative group">
@@ -334,29 +505,35 @@
                             <h4 class="font-bold text-slate-800 text-lg">${data.produto}</h4>
                         </div>
                         <div class="flex items-center justify-between mt-4">
-                            <span class="text-xs font-medium text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">${data.ofertasCount || 0} ofertas</span>
-                            <button onclick="verOfertas('${data.id}')" id="btn-ver-${data.id}" class="text-sm font-bold text-blue-600 hover:underline">Ver Ofertas</button>
+                            <span class="text-xs font-medium text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
+                                ${data.ofertasCount || 0} ofertas recebidas
+                            </span>
+                            <button onclick="verOfertas('${data.id}')" id="btn-ver-${data.id}" class="text-sm font-bold text-blue-600 hover:underline">
+                                Ver Ofertas
+                            </button>
                         </div>
                         <div id="ofertas-${data.id}" class="hidden mt-4 space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-100"></div>
-                    </div>`;
-            }); initIcons();
+                    </div>
+                `;
+            });
+            initIcons();
         }
 
-        // --- LÓGICA DE FORNECEDOR INTELIGENTE ---
+        // --- RENDER FORNECEDOR ---
         function renderFornecedorOportunidades() {
-            const container = document.getElementById('lista-fornecedor-todos'); container.innerHTML = '';
+            const container = document.getElementById('lista-fornecedor-todos');
+            container.innerHTML = '';
             const filtrados = filtrarDados(allPedidos);
-            
+
             if(filtrados.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 mt-10">Nenhum pedido disponível.</div>'; return; }
 
             filtrados.forEach(data => {
-                // VERIFICA SE JÁ OFERTOU
-                // O path da oferta é: pedidos/{pedidoId}/ofertas/{ofertaId}
-                // O split('/') traz: [0]="pedidos", [1]="ID_DO_PEDIDO", etc.
+                // AQUI ESTÁ A LÓGICA DE COMPARAÇÃO
+                // Verifica se o ID deste pedido existe dentro do "path" de alguma das minhas ofertas
                 const ofertaJaFeita = myOffers.find(o => o.path.includes(data.id));
 
                 if (ofertaJaFeita) {
-                    // RENDERIZA CARTÃO "JÁ OFERTADO"
+                    // Card Verde (Já ofertado)
                     container.innerHTML += `
                         <div class="bg-green-50 p-5 rounded-2xl shadow-sm border border-green-200 opacity-80">
                             <div class="flex justify-between items-center mb-2">
@@ -370,7 +547,7 @@
                         </div>
                     `;
                 } else {
-                    // RENDERIZA CARTÃO "PENDENTE"
+                    // Card Padrão (Pendente)
                     container.innerHTML += `
                         <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-orange-500 hover:shadow-md transition">
                             <div class="flex justify-between mb-3">
@@ -384,61 +561,156 @@
                         </div>
                     `;
                 }
-            }); initIcons();
+            });
+            initIcons();
         }
 
         function renderFornecedorMinhas() {
-            const container = document.getElementById('lista-fornecedor-minhas'); container.innerHTML = '';
-            if(myOffers.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 mt-10">Você ainda não fez ofertas.<br>Verifique se o alerta de índice apareceu acima.</div>'; return; }
+            const container = document.getElementById('lista-fornecedor-minhas');
+            container.innerHTML = '';
+            if(myOffers.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 mt-10">Você ainda não fez ofertas.<br>Verifique se o alerta de índice apareceu.</div>'; return; }
+
             myOffers.forEach(offer => {
                 const pedidoId = offer.path.split('/')[1];
                 const produtoRelacionado = allPedidos.find(p => p.id === pedidoId);
-                const nomeProduto = produtoRelacionado ? produtoRelacionado.produto : "Pedido desconhecido";
+                const nomeProduto = produtoRelacionado ? produtoRelacionado.produto : "Pedido encerrado";
                 container.innerHTML += `
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-3 flex justify-between items-center">
-                        <div><div class="text-xs text-slate-400 mb-1">Para: ${nomeProduto}</div><div class="font-bold text-green-600 text-xl flex items-center gap-2">R$ <input type="number" id="edit-val-${offer.id}" value="${offer.valor}" class="w-24 border-b border-slate-300 focus:outline-none focus:border-green-500 bg-transparent"></div></div>
-                        <div class="flex gap-2"><button onclick="atualizarMinhaOferta('${offer.path}', '${offer.id}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100"><i data-lucide="save" class="w-4 h-4"></i></button><button onclick="apagarMinhaOferta('${offer.path}', '${pedidoId}')" class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>
-                    </div>`;
-            }); initIcons();
+                        <div>
+                            <div class="text-xs text-slate-400 mb-1">Para: ${nomeProduto}</div>
+                            <div class="font-bold text-green-600 text-xl flex items-center gap-2">R$ <input type="number" id="edit-val-${offer.id}" value="${offer.valor}" class="w-24 border-b border-slate-300 focus:outline-none focus:border-green-500 bg-transparent"></div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="atualizarMinhaOferta('${offer.path}', '${offer.id}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100"><i data-lucide="save" class="w-4 h-4"></i></button>
+                            <button onclick="apagarMinhaOferta('${offer.path}', '${pedidoId}')" class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            initIcons();
         }
 
-        // --- FUNÇÕES DE AÇÃO ---
-        window.salvarPedido = async () => { /* Mantido */ 
-            const inp = document.getElementById('produtoInput'); const cat = document.getElementById('categoriaInput'); const editId = document.getElementById('edit-id').value; const btn = document.getElementById('btn-save-pedido');
-            if(!inp.value) return alert("Digite o nome do produto"); btn.disabled = true;
-            try { if (editId) { await updateDoc(doc(db, "pedidos", editId), { produto: inp.value, categoria: cat.value }); alert("Atualizado!"); cancelarEdicao(); }
-            else { await addDoc(collection(db, "pedidos"), { produto: inp.value, categoria: cat.value, createdAt: serverTimestamp(), status: 'aberto', ofertasCount: 0 }); } inp.value = ''; } catch(e) { console.error(e); alert("Erro ao salvar."); } finally { btn.disabled = false; }
+        // --- CRUD ACTIONS ---
+        window.salvarPedido = async () => {
+            const inp = document.getElementById('produtoInput');
+            const cat = document.getElementById('categoriaInput');
+            const editId = document.getElementById('edit-id').value;
+            const btn = document.getElementById('btn-save-pedido');
+
+            if(!inp.value) return alert("Digite o nome do produto");
+            btn.disabled = true;
+
+            try {
+                if (editId) {
+                    await updateDoc(doc(db, "pedidos", editId), { produto: inp.value, categoria: cat.value });
+                    alert("Pedido atualizado!");
+                    cancelarEdicao();
+                } else {
+                    await addDoc(collection(db, "pedidos"), {
+                        produto: inp.value, categoria: cat.value, createdAt: serverTimestamp(), status: 'aberto', ofertasCount: 0
+                    });
+                }
+                inp.value = '';
+            } catch(e) { console.error(e); alert("Erro ao salvar."); }
+            finally { btn.disabled = false; }
         }
-        window.editarPedido = (id, prod, cat) => { /* Mantido */ 
-            document.getElementById('produtoInput').value = prod; document.getElementById('categoriaInput').value = cat; document.getElementById('edit-id').value = id;
-            document.getElementById('form-title').innerHTML = '<i data-lucide="pencil" class="text-orange-500 w-5 h-5"></i> Editando Pedido'; document.getElementById('btn-save-pedido').innerText = "Atualizar"; document.getElementById('btn-save-pedido').classList.replace('bg-blue-600', 'bg-orange-500'); document.getElementById('btn-cancel-edit').classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); initIcons();
+
+        window.editarPedido = (id, prod, cat) => {
+            document.getElementById('produtoInput').value = prod;
+            document.getElementById('categoriaInput').value = cat;
+            document.getElementById('edit-id').value = id;
+            document.getElementById('form-title').innerHTML = '<i data-lucide="pencil" class="text-orange-500 w-5 h-5"></i> Editando Pedido';
+            document.getElementById('btn-save-pedido').innerText = "Atualizar Pedido";
+            document.getElementById('btn-save-pedido').classList.replace('bg-blue-600', 'bg-orange-500');
+            document.getElementById('btn-cancel-edit').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            initIcons();
         }
-        window.cancelarEdicao = () => { /* Mantido */ 
-            document.getElementById('produtoInput').value = ''; document.getElementById('edit-id').value = ''; document.getElementById('categoriaInput').value = 'Outros'; document.getElementById('form-title').innerHTML = '<i data-lucide="plus-circle" class="text-blue-600 w-5 h-5"></i> Novo Pedido'; document.getElementById('btn-save-pedido').innerText = "Publicar Pedido"; document.getElementById('btn-save-pedido').classList.replace('bg-orange-500', 'bg-blue-600'); document.getElementById('btn-cancel-edit').classList.add('hidden'); initIcons();
+
+        window.cancelarEdicao = () => {
+            document.getElementById('produtoInput').value = '';
+            document.getElementById('edit-id').value = '';
+            document.getElementById('categoriaInput').value = 'Outros';
+            document.getElementById('form-title').innerHTML = '<i data-lucide="plus-circle" class="text-blue-600 w-5 h-5"></i> Novo Pedido';
+            document.getElementById('btn-save-pedido').innerText = "Publicar Pedido";
+            document.getElementById('btn-save-pedido').classList.replace('bg-orange-500', 'bg-blue-600');
+            document.getElementById('btn-cancel-edit').classList.add('hidden');
+            initIcons();
         }
-        window.apagarPedido = async (id) => { if(confirm("Tem certeza?")) await deleteDoc(doc(db, "pedidos", id)); }
+
+        window.apagarPedido = async (id) => {
+            if(confirm("Tem certeza?")) await deleteDoc(doc(db, "pedidos", id));
+        }
+
         window.verOfertas = (id) => {
-            const div = document.getElementById(`ofertas-${id}`); const btn = document.getElementById(`btn-ver-${id}`);
-            if(!div.classList.contains('hidden')) { div.classList.add('hidden'); btn.innerText = "Ver Ofertas"; return; }
-            div.classList.remove('hidden'); btn.innerText = "Ocultar"; div.innerHTML = '<p class="text-xs text-center text-slate-400">Carregando...</p>';
+            const div = document.getElementById(`ofertas-${id}`);
+            const btn = document.getElementById(`btn-ver-${id}`);
+            if(!div.classList.contains('hidden')) {
+                div.classList.add('hidden'); btn.innerText = "Ver Ofertas"; return;
+            }
+            div.classList.remove('hidden'); btn.innerText = "Ocultar";
+            div.innerHTML = '<p class="text-xs text-center text-slate-400">Carregando...</p>';
+            
             const q = query(collection(db, "pedidos", id, "ofertas"), orderBy("valor", "asc"));
             onSnapshot(q, (snap) => {
-                div.innerHTML = ''; if(snap.empty) { div.innerHTML = '<p class="text-xs text-slate-400 text-center">Sem ofertas.</p>'; return; }
-                snap.forEach(o => { const off = o.data(); div.innerHTML += `<div class="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border border-slate-100"><div><div class="font-bold text-green-600">R$ ${off.valor.toFixed(2)}</div><div class="text-[10px] text-slate-500 uppercase">${off.fornecedorNome}</div></div><a href="https://wa.me/${off.whatsapp}?text=Olá ${off.fornecedorNome}, aceito a oferta de R$${off.valor}." target="_blank" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition flex items-center gap-1 text-xs font-bold"><i data-lucide="message-circle" class="w-3 h-3"></i> Zap</a></div>`; }); initIcons();
+                div.innerHTML = '';
+                if(snap.empty) { div.innerHTML = '<p class="text-xs text-slate-400 text-center">Sem ofertas.</p>'; return; }
+                snap.forEach(o => {
+                    const off = o.data();
+                    div.innerHTML += `
+                        <div class="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border border-slate-100">
+                            <div><div class="font-bold text-green-600">R$ ${off.valor.toFixed(2)}</div><div class="text-[10px] text-slate-500 uppercase">${off.fornecedorNome}</div></div>
+                            <a href="https://wa.me/${off.whatsapp}?text=Olá ${off.fornecedorNome}, aceito a oferta de R$${off.valor} para o pedido." target="_blank"
+                               class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition flex items-center gap-1 text-xs font-bold"><i data-lucide="message-circle" class="w-3 h-3"></i> WhatsApp</a>
+                        </div>
+                    `;
+                });
+                initIcons();
             })
         }
+
         window.mudarAbaForn = (aba) => {
-            const listaTodos = document.getElementById('lista-fornecedor-todos'); const listaMinhas = document.getElementById('lista-fornecedor-minhas');
-            const btnOp = document.getElementById('tab-oportunidades'); const btnMy = document.getElementById('tab-minhas');
-            if (aba === 'oportunidades') { listaTodos.classList.remove('hidden'); listaMinhas.classList.add('hidden'); btnOp.classList.add('bg-white', 'shadow-sm', 'text-blue-900'); btnOp.classList.remove('text-slate-500'); btnMy.classList.remove('bg-white', 'shadow-sm', 'text-blue-900'); btnMy.classList.add('text-slate-500'); } 
-            else { listaTodos.classList.add('hidden'); listaMinhas.classList.remove('hidden'); btnMy.classList.add('bg-white', 'shadow-sm', 'text-blue-900'); btnMy.classList.remove('text-slate-500'); btnOp.classList.remove('bg-white', 'shadow-sm', 'text-blue-900'); btnOp.classList.add('text-slate-500'); }
+            const listaTodos = document.getElementById('lista-fornecedor-todos');
+            const listaMinhas = document.getElementById('lista-fornecedor-minhas');
+            const btnOp = document.getElementById('tab-oportunidades');
+            const btnMy = document.getElementById('tab-minhas');
+
+            if (aba === 'oportunidades') {
+                listaTodos.classList.remove('hidden'); listaMinhas.classList.add('hidden');
+                btnOp.classList.add('bg-white', 'shadow-sm', 'text-blue-900'); btnOp.classList.remove('text-slate-500');
+                btnMy.classList.remove('bg-white', 'shadow-sm', 'text-blue-900'); btnMy.classList.add('text-slate-500');
+                renderFornecedorOportunidades();
+            } else {
+                listaTodos.classList.add('hidden'); listaMinhas.classList.remove('hidden');
+                btnMy.classList.add('bg-white', 'shadow-sm', 'text-blue-900'); btnMy.classList.remove('text-slate-500');
+                btnOp.classList.remove('bg-white', 'shadow-sm', 'text-blue-900'); btnOp.classList.add('text-slate-500');
+                renderFornecedorMinhas();
+            }
         }
+
         window.enviarOferta = async (pedidoId) => {
-            const val = document.getElementById(`valor-${pedidoId}`).value; if(!val) return;
-            try { await addDoc(collection(db, "pedidos", pedidoId, "ofertas"), { valor: parseFloat(val), fornecedorId: currentUserData.uid, fornecedorNome: currentUserData.nome, whatsapp: currentUserData.whatsapp, createdAt: serverTimestamp() }); await updateDoc(doc(db, "pedidos", pedidoId), { ofertasCount: increment(1) }); alert("Oferta enviada!"); } catch(e) { console.error(e); alert("Erro ao enviar."); }
+            const val = document.getElementById(`valor-${pedidoId}`).value;
+            if(!val) return;
+            try {
+                await addDoc(collection(db, "pedidos", pedidoId, "ofertas"), {
+                    valor: parseFloat(val), fornecedorId: currentUserData.uid, fornecedorNome: currentUserData.nome, whatsapp: currentUserData.whatsapp, createdAt: serverTimestamp()
+                });
+                await updateDoc(doc(db, "pedidos", pedidoId), { ofertasCount: increment(1) });
+                alert("Oferta enviada!"); document.getElementById(`valor-${pedidoId}`).value = '';
+            } catch(e) { console.error(e); alert("Erro ao enviar."); }
         }
-        window.atualizarMinhaOferta = async (path, elementId) => { const novoValor = document.getElementById(`edit-val-${elementId}`).value; const parts = path.split('/'); try { await updateDoc(doc(db, parts[0], parts[1], parts[2], parts[3]), { valor: parseFloat(novoValor) }); alert("Preço atualizado!"); } catch(e) { alert("Erro ao atualizar."); } }
-        window.apagarMinhaOferta = async (path, parentId) => { if(!confirm("Remover esta oferta?")) return; const parts = path.split('/'); try { await deleteDoc(doc(db, parts[0], parts[1], parts[2], parts[3])); await updateDoc(doc(db, "pedidos", parentId), { ofertasCount: increment(-1) }); } catch(e) { alert("Erro ao apagar."); } }
+
+        window.atualizarMinhaOferta = async (path, elementId) => {
+            const novoValor = document.getElementById(`edit-val-${elementId}`).value;
+            const parts = path.split('/');
+            try { await updateDoc(doc(db, parts[0], parts[1], parts[2], parts[3]), { valor: parseFloat(novoValor) }); alert("Preço atualizado!"); } catch(e) { alert("Erro ao atualizar."); }
+        }
+
+        window.apagarMinhaOferta = async (path, parentId) => {
+            if(!confirm("Remover esta oferta?")) return;
+            const parts = path.split('/');
+            try { await deleteDoc(doc(db, parts[0], parts[1], parts[2], parts[3])); await updateDoc(doc(db, "pedidos", parentId), { ofertasCount: increment(-1) }); } catch(e) { alert("Erro ao apagar."); }
+        }
     </script>
 </body>
 </html>
