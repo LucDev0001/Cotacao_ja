@@ -23,14 +23,12 @@
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
-    <!-- BOTÃO DE INSTALAÇÃO (Invisível por padrão) -->
+    <!-- BOTÃO DE INSTALAÇÃO -->
     <button id="btn-install-app" class="hidden install-btn-float bg-blue-900 text-white px-6 py-3 rounded-full shadow-2xl font-bold border-2 border-blue-400 flex items-center gap-2">
         <i data-lucide="download-cloud"></i> Instalar App
     </button>
 
-    <!-- ======================================================= -->
     <!-- 1. LANDING PAGE -->
-    <!-- ======================================================= -->
     <div id="landing-screen" class="flex-grow flex flex-col">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center bg-white shadow-sm">
             <div class="font-bold text-2xl text-blue-900 tracking-tighter flex items-center gap-2">
@@ -55,12 +53,10 @@
                     <button onclick="mostrarLogin()" class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-blue-200 hover:bg-blue-700 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
                         Começar Agora <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     </button>
-                    <!-- Link Mobile para FAQ -->
                     <a href="faq.html" class="sm:hidden block text-blue-600 font-bold py-4 underline">Ver instruções de uso</a>
                 </div>
             </div>
             
-            <!-- Ilustração -->
             <div class="md:w-1/2 relative flex justify-center">
                 <div class="absolute inset-0 bg-blue-200 rounded-full blur-3xl opacity-30 animate-pulse"></div>
                 <div class="bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 w-full max-w-sm relative z-10 transform rotate-1 hover:rotate-0 transition duration-500">
@@ -86,9 +82,7 @@
         </header>
     </div>
 
-    <!-- ======================================================= -->
     <!-- 2. LOGIN / CADASTRO -->
-    <!-- ======================================================= -->
     <div id="auth-screen" class="hidden min-h-screen flex items-center justify-center p-4 bg-slate-100 fade-enter fixed inset-0 z-50 overflow-y-auto">
         <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md relative my-8">
             <button onclick="voltarInicio()" class="absolute top-6 left-6 text-slate-400 hover:text-slate-600"><i data-lucide="arrow-left"></i></button>
@@ -108,7 +102,8 @@
                 
                 <div id="signup-fields" class="hidden space-y-4 pt-2 border-t border-slate-100 fade-enter">
                     <input type="text" id="nome" placeholder="Nome da Empresa/Pessoa" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                    <input type="tel" id="whatsapp" placeholder="WhatsApp (somente números)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                    <input type="tel" id="whatsapp" placeholder="WhatsApp (DDD + Número)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                    <div class="text-xs text-gray-400 px-1">Ex: 21999999999 (O app adiciona o 55 do Brasil automaticamente)</div>
                     <div class="relative">
                         <select id="tipoUser" class="w-full p-4 bg-white border border-slate-200 rounded-xl appearance-none text-slate-600">
                             <option value="fornecedor">Sou Fornecedor (Vender)</option>
@@ -127,12 +122,9 @@
         </div>
     </div>
 
-    <!-- ======================================================= -->
     <!-- 3. SISTEMA PRINCIPAL -->
-    <!-- ======================================================= -->
     <div id="app-screen" class="hidden bg-slate-50 min-h-screen pb-24 fade-enter flex-col">
         
-        <!-- App Header -->
         <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
             <div class="container mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center gap-2">
@@ -148,7 +140,7 @@
 
         <main class="container mx-auto px-4 max-w-2xl mt-6 flex-grow">
             
-            <!-- FILTROS (Comum a todos) -->
+            <!-- FILTROS -->
             <div class="flex items-center justify-between mb-6">
                 <h3 class="font-bold text-slate-700">Itens</h3>
                 <div class="relative">
@@ -165,13 +157,12 @@
 
             <!-- VIEW GERENTE -->
             <div id="view-gerente" class="hidden space-y-6">
-                <!-- Form Criar/Editar -->
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
                     <h2 id="form-title" class="font-bold text-slate-800 mb-3 flex items-center gap-2">
                         <i data-lucide="plus-circle" class="text-blue-600 w-5 h-5"></i> Novo Pedido
                     </h2>
                     
-                    <input type="hidden" id="edit-id" value=""> <!-- ID oculto para edição -->
+                    <input type="hidden" id="edit-id" value="">
 
                     <div class="grid grid-cols-3 gap-3 mb-3">
                         <div class="col-span-2">
@@ -203,7 +194,6 @@
 
             <!-- VIEW FORNECEDOR -->
             <div id="view-fornecedor" class="hidden space-y-6">
-                <!-- Abas -->
                 <div class="flex p-1 bg-slate-200 rounded-xl mb-4">
                     <button onclick="mudarAbaForn('oportunidades')" id="tab-oportunidades" class="flex-1 py-2 rounded-lg text-sm font-bold bg-white shadow-sm text-blue-900 transition">Oportunidades</button>
                     <button onclick="mudarAbaForn('minhas')" id="tab-minhas" class="flex-1 py-2 rounded-lg text-sm font-bold text-slate-500 hover:text-slate-700 transition">Minhas Ofertas</button>
@@ -216,7 +206,6 @@
         </main>
     </div>
 
-    <!-- RODAPÉ PROFISSIONAL -->
     <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
         <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
             <div>
@@ -239,7 +228,6 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-        // CONFIGURAÇÃO
         const firebaseConfig = {
             apiKey: "AIzaSyAhPYUnom0B7vXOjqf5eyMzye8f-Mp97Yw",
             authDomain: "leilaoreverso-af6e1.firebaseapp.com",
@@ -266,7 +254,6 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Mostrar botão de instalação
             btnInstall.classList.remove('hidden');
         });
 
@@ -274,30 +261,23 @@
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    btnInstall.classList.add('hidden');
-                }
+                if (outcome === 'accepted') btnInstall.classList.add('hidden');
                 deferredPrompt = null;
             }
         });
 
-        // REGISTER SERVICE WORKER
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('SW Registrado!', reg))
-            .catch(err => console.log('SW Falhou!', err));
-        }
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Erro', err));
 
         // NAVEGAÇÃO
         window.mostrarLogin = () => {
             document.getElementById('landing-screen').classList.add('hidden');
             document.getElementById('auth-screen').classList.remove('hidden');
-            btnInstall.classList.add('hidden'); // Esconder botão instalar no login
+            btnInstall.classList.add('hidden');
         }
         window.voltarInicio = () => {
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('landing-screen').classList.remove('hidden');
-            if (deferredPrompt) btnInstall.classList.remove('hidden'); // Mostrar novamente se disponível
+            if (deferredPrompt) btnInstall.classList.remove('hidden');
         }
 
         // AUTH
@@ -326,9 +306,19 @@
             const pass = document.getElementById('password').value;
             const nome = document.getElementById('nome').value;
             const tipo = document.getElementById('tipoUser').value;
-            const zap = document.getElementById('whatsapp').value;
             
-            if(!email || !pass || !nome) return alert("Preencha todos os campos");
+            // LÓGICA DE CORREÇÃO DO WHATSAPP (BRASIL)
+            let zap = document.getElementById('whatsapp').value;
+            // Remove tudo que não for número (espaço, traço, parenteses)
+            zap = zap.replace(/\D/g, '');
+            
+            if(!email || !pass || !nome || !zap) return alert("Preencha todos os campos");
+
+            // Se o usuário digitou apenas DDD+Numero (Ex: 21999999999 - 11 digitos), adiciona 55
+            // Se digitou menos de 10 digitos, provavelmente está errado, mas deixamos passar.
+            if(zap.length >= 10 && !zap.startsWith('55')) {
+                zap = '55' + zap;
+            }
             
             try {
                 const cred = await createUserWithEmailAndPassword(auth, email, pass);
@@ -343,14 +333,13 @@
         }
         window.logout = () => signOut(auth);
 
-        // STATE MANAGER
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 document.getElementById('landing-screen').classList.add('hidden');
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('app-screen').classList.remove('hidden');
                 document.getElementById('app-screen').classList.add('flex');
-                btnInstall.classList.add('hidden'); // Esconder no App
+                btnInstall.classList.add('hidden');
 
                 const userDoc = await getDoc(doc(db, "users", user.uid));
                 if (userDoc.exists()) {
@@ -364,7 +353,7 @@
                 document.getElementById('app-screen').classList.remove('flex');
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('landing-screen').classList.remove('hidden');
-                if (deferredPrompt) btnInstall.classList.remove('hidden'); // Mostrar na Landing
+                if (deferredPrompt) btnInstall.classList.remove('hidden');
                 currentUserData = null;
             }
         });
@@ -373,27 +362,20 @@
         function iniciarApp(tipo) {
             const pedidosRef = collection(db, "pedidos");
             const q = query(pedidosRef, orderBy("createdAt", "desc"));
-
             document.getElementById('view-gerente').classList.add('hidden');
             document.getElementById('view-fornecedor').classList.add('hidden');
 
-            // Listener Geral de Pedidos
             onSnapshot(q, (snapshot) => {
                 allPedidos = [];
                 snapshot.forEach(doc => allPedidos.push({ id: doc.id, ...doc.data() }));
-                
-                if (tipo === 'gerente') {
-                    renderGerente();
-                } else {
-                    renderFornecedorOportunidades();
-                }
+                if (tipo === 'gerente') renderGerente();
+                else renderFornecedorOportunidades();
             });
 
             if (tipo === 'gerente') {
                 document.getElementById('view-gerente').classList.remove('hidden');
             } else {
                 document.getElementById('view-fornecedor').classList.remove('hidden');
-                // Listener Minhas Ofertas
                 const myOffersQ = query(collectionGroup(db, 'ofertas'), where('fornecedorId', '==', currentUserData.uid));
                 onSnapshot(myOffersQ, (snap) => {
                     myOffers = [];
@@ -403,51 +385,37 @@
             }
         }
 
-        // --- LÓGICA DE FILTRO ---
         window.aplicarFiltro = () => {
             if (currentUserData.tipo === 'gerente') renderGerente();
             else renderFornecedorOportunidades();
         }
-
         function filtrarDados(lista) {
             const categ = document.getElementById('filtro-categoria').value;
             if (categ === 'todos') return lista;
             return lista.filter(item => item.categoria === categ);
         }
 
-        // --- GERENTE ---
         function renderGerente() {
             const container = document.getElementById('lista-gerente');
             container.innerHTML = '';
             const filtrados = filtrarDados(allPedidos);
 
-            if(filtrados.length === 0) {
-                container.innerHTML = '<div class="text-center text-slate-400 py-10">Nenhum pedido encontrado.</div>';
-                return;
-            }
+            if(filtrados.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 py-10">Nenhum pedido encontrado.</div>'; return; }
 
             filtrados.forEach(data => {
                 container.innerHTML += `
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition relative group">
                         <div class="absolute top-4 right-4 flex gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onclick="editarPedido('${data.id}', '${data.produto}', '${data.categoria || 'Outros'}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100" title="Editar">
-                                <i data-lucide="pencil" class="w-4 h-4"></i>
-                            </button>
-                            <button onclick="apagarPedido('${data.id}')" class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100" title="Apagar">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                            </button>
+                            <button onclick="editarPedido('${data.id}', '${data.produto}', '${data.categoria || 'Outros'}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                            <button onclick="apagarPedido('${data.id}')" class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                         <div class="flex items-center gap-3 mb-3">
                             <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded uppercase">${data.categoria || 'Geral'}</span>
                             <h4 class="font-bold text-slate-800 text-lg">${data.produto}</h4>
                         </div>
                         <div class="flex items-center justify-between mt-4">
-                            <span class="text-xs font-medium text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
-                                ${data.ofertasCount || 0} ofertas recebidas
-                            </span>
-                            <button onclick="verOfertas('${data.id}')" id="btn-ver-${data.id}" class="text-sm font-bold text-blue-600 hover:underline">
-                                Ver Ofertas
-                            </button>
+                            <span class="text-xs font-medium text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">${data.ofertasCount || 0} ofertas</span>
+                            <button onclick="verOfertas('${data.id}')" id="btn-ver-${data.id}" class="text-sm font-bold text-blue-600 hover:underline">Ver Ofertas</button>
                         </div>
                         <div id="ofertas-${data.id}" class="hidden mt-4 space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-100"></div>
                     </div>
@@ -461,23 +429,13 @@
             const cat = document.getElementById('categoriaInput');
             const editId = document.getElementById('edit-id').value;
             const btn = document.getElementById('btn-save-pedido');
-
             if(!inp.value) return alert("Digite o nome do produto");
             btn.disabled = true;
-
             try {
-                if (editId) {
-                    await updateDoc(doc(db, "pedidos", editId), { produto: inp.value, categoria: cat.value });
-                    alert("Pedido atualizado!");
-                    cancelarEdicao();
-                } else {
-                    await addDoc(collection(db, "pedidos"), {
-                        produto: inp.value, categoria: cat.value, createdAt: serverTimestamp(), status: 'aberto', ofertasCount: 0
-                    });
-                }
+                if (editId) { await updateDoc(doc(db, "pedidos", editId), { produto: inp.value, categoria: cat.value }); alert("Atualizado!"); cancelarEdicao(); }
+                else { await addDoc(collection(db, "pedidos"), { produto: inp.value, categoria: cat.value, createdAt: serverTimestamp(), status: 'aberto', ofertasCount: 0 }); }
                 inp.value = '';
-            } catch(e) { console.error(e); alert("Erro ao salvar."); }
-            finally { btn.disabled = false; }
+            } catch(e) { console.error(e); alert("Erro ao salvar."); } finally { btn.disabled = false; }
         }
 
         window.editarPedido = (id, prod, cat) => {
@@ -485,11 +443,10 @@
             document.getElementById('categoriaInput').value = cat;
             document.getElementById('edit-id').value = id;
             document.getElementById('form-title').innerHTML = '<i data-lucide="pencil" class="text-orange-500 w-5 h-5"></i> Editando Pedido';
-            document.getElementById('btn-save-pedido').innerText = "Atualizar Pedido";
+            document.getElementById('btn-save-pedido').innerText = "Atualizar";
             document.getElementById('btn-save-pedido').classList.replace('bg-blue-600', 'bg-orange-500');
             document.getElementById('btn-cancel-edit').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            initIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' }); initIcons();
         }
 
         window.cancelarEdicao = () => {
@@ -499,20 +456,15 @@
             document.getElementById('form-title').innerHTML = '<i data-lucide="plus-circle" class="text-blue-600 w-5 h-5"></i> Novo Pedido';
             document.getElementById('btn-save-pedido').innerText = "Publicar Pedido";
             document.getElementById('btn-save-pedido').classList.replace('bg-orange-500', 'bg-blue-600');
-            document.getElementById('btn-cancel-edit').classList.add('hidden');
-            initIcons();
+            document.getElementById('btn-cancel-edit').classList.add('hidden'); initIcons();
         }
 
-        window.apagarPedido = async (id) => {
-            if(confirm("Tem certeza?")) await deleteDoc(doc(db, "pedidos", id));
-        }
+        window.apagarPedido = async (id) => { if(confirm("Tem certeza?")) await deleteDoc(doc(db, "pedidos", id)); }
 
         window.verOfertas = (id) => {
             const div = document.getElementById(`ofertas-${id}`);
             const btn = document.getElementById(`btn-ver-${id}`);
-            if(!div.classList.contains('hidden')) {
-                div.classList.add('hidden'); btn.innerText = "Ver Ofertas"; return;
-            }
+            if(!div.classList.contains('hidden')) { div.classList.add('hidden'); btn.innerText = "Ver Ofertas"; return; }
             div.classList.remove('hidden'); btn.innerText = "Ocultar";
             div.innerHTML = '<p class="text-xs text-center text-slate-400">Carregando...</p>';
             
@@ -525,8 +477,8 @@
                     div.innerHTML += `
                         <div class="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border border-slate-100">
                             <div><div class="font-bold text-green-600">R$ ${off.valor.toFixed(2)}</div><div class="text-[10px] text-slate-500 uppercase">${off.fornecedorNome}</div></div>
-                            <a href="https://wa.me/${off.whatsapp}?text=Olá ${off.fornecedorNome}, aceito a oferta de R$${off.valor} para o pedido." target="_blank"
-                               class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition flex items-center gap-1 text-xs font-bold"><i data-lucide="message-circle" class="w-3 h-3"></i> WhatsApp</a>
+                            <a href="https://wa.me/${off.whatsapp}?text=Olá ${off.fornecedorNome}, aceito sua oferta de R$${off.valor}." target="_blank"
+                               class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition flex items-center gap-1 text-xs font-bold"><i data-lucide="message-circle" class="w-3 h-3"></i> Zap</a>
                         </div>
                     `;
                 });
@@ -534,13 +486,11 @@
             })
         }
 
-        // --- FORNECEDOR ---
         window.mudarAbaForn = (aba) => {
             const listaTodos = document.getElementById('lista-fornecedor-todos');
             const listaMinhas = document.getElementById('lista-fornecedor-minhas');
             const btnOp = document.getElementById('tab-oportunidades');
             const btnMy = document.getElementById('tab-minhas');
-
             if (aba === 'oportunidades') {
                 listaTodos.classList.remove('hidden'); listaMinhas.classList.add('hidden');
                 btnOp.classList.add('bg-white', 'shadow-sm', 'text-blue-900'); btnOp.classList.remove('text-slate-500');
@@ -558,9 +508,7 @@
             const container = document.getElementById('lista-fornecedor-todos');
             container.innerHTML = '';
             const filtrados = filtrarDados(allPedidos);
-
             if(filtrados.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 mt-10">Nenhum pedido disponível.</div>'; return; }
-
             filtrados.forEach(data => {
                 container.innerHTML += `
                     <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-orange-500 hover:shadow-md transition">
@@ -581,47 +529,31 @@
             const container = document.getElementById('lista-fornecedor-minhas');
             container.innerHTML = '';
             if(myOffers.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 mt-10">Você ainda não fez ofertas.</div>'; return; }
-
             myOffers.forEach(offer => {
                 const produtoRelacionado = allPedidos.find(p => p.id === offer.path.split('/')[1]);
                 const nomeProduto = produtoRelacionado ? produtoRelacionado.produto : "Pedido encerrado/desconhecido";
                 container.innerHTML += `
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-3 flex justify-between items-center">
-                        <div>
-                            <div class="text-xs text-slate-400 mb-1">Para: ${nomeProduto}</div>
-                            <div class="font-bold text-green-600 text-xl flex items-center gap-2">R$ <input type="number" id="edit-val-${offer.id}" value="${offer.valor}" class="w-24 border-b border-slate-300 focus:outline-none focus:border-green-500 bg-transparent"></div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="atualizarMinhaOferta('${offer.path}', '${offer.id}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100"><i data-lucide="save" class="w-4 h-4"></i></button>
-                            <button onclick="apagarMinhaOferta('${offer.path}', '${offer.path.split('/')[1]}')" class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                        </div>
+                        <div><div class="text-xs text-slate-400 mb-1">Para: ${nomeProduto}</div><div class="font-bold text-green-600 text-xl flex items-center gap-2">R$ <input type="number" id="edit-val-${offer.id}" value="${offer.valor}" class="w-24 border-b border-slate-300 focus:outline-none focus:border-green-500 bg-transparent"></div></div>
+                        <div class="flex gap-2"><button onclick="atualizarMinhaOferta('${offer.path}', '${offer.id}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100"><i data-lucide="save" class="w-4 h-4"></i></button><button onclick="apagarMinhaOferta('${offer.path}', '${offer.path.split('/')[1]}')" class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>
                     </div>
                 `;
-            });
-            initIcons();
+            }); initIcons();
         }
 
         window.enviarOferta = async (pedidoId) => {
             const val = document.getElementById(`valor-${pedidoId}`).value;
             if(!val) return;
-            try {
-                await addDoc(collection(db, "pedidos", pedidoId, "ofertas"), {
-                    valor: parseFloat(val), fornecedorId: currentUserData.uid, fornecedorNome: currentUserData.nome, whatsapp: currentUserData.whatsapp, createdAt: serverTimestamp()
-                });
-                await updateDoc(doc(db, "pedidos", pedidoId), { ofertasCount: increment(1) });
-                alert("Oferta enviada!"); document.getElementById(`valor-${pedidoId}`).value = '';
-            } catch(e) { console.error(e); alert("Erro ao enviar."); }
+            try { await addDoc(collection(db, "pedidos", pedidoId, "ofertas"), { valor: parseFloat(val), fornecedorId: currentUserData.uid, fornecedorNome: currentUserData.nome, whatsapp: currentUserData.whatsapp, createdAt: serverTimestamp() });
+                await updateDoc(doc(db, "pedidos", pedidoId), { ofertasCount: increment(1) }); alert("Oferta enviada!"); document.getElementById(`valor-${pedidoId}`).value = ''; } catch(e) { console.error(e); alert("Erro ao enviar."); }
         }
 
         window.atualizarMinhaOferta = async (path, elementId) => {
-            const novoValor = document.getElementById(`edit-val-${elementId}`).value;
-            const parts = path.split('/');
+            const novoValor = document.getElementById(`edit-val-${elementId}`).value; const parts = path.split('/');
             try { await updateDoc(doc(db, parts[0], parts[1], parts[2], parts[3]), { valor: parseFloat(novoValor) }); alert("Preço atualizado!"); } catch(e) { alert("Erro ao atualizar."); }
         }
-
         window.apagarMinhaOferta = async (path, parentId) => {
-            if(!confirm("Remover esta oferta?")) return;
-            const parts = path.split('/');
+            if(!confirm("Remover esta oferta?")) return; const parts = path.split('/');
             try { await deleteDoc(doc(db, parts[0], parts[1], parts[2], parts[3])); await updateDoc(doc(db, "pedidos", parentId), { ofertasCount: increment(-1) }); } catch(e) { alert("Erro ao apagar."); }
         }
     </script>
