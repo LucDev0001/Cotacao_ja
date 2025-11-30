@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cotacao-app-v2';
+const CACHE_NAME = 'cotacao-app-v3-force-update'; // Mudei a versão para forçar atualização
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -9,52 +9,56 @@ const ASSETS_TO_CACHE = [
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
 ];
 
-// 1. Instalação: Cache dos arquivos estáticos
+// 1. Instalação
 self.addEventListener('install', (event) => {
+  // Força o SW a ativar imediatamente, sem esperar
+  self.skipWaiting();
+  
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Caching shell assets');
       return cache.addAll(ASSETS_TO_CACHE);
     })
   );
 });
 
-// 2. Ativação: Limpeza de caches antigos
+// 2. Ativação (Limpa caches velhos e assume controle)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keyList) => {
       return Promise.all(keyList.map((key) => {
         if (key !== CACHE_NAME) {
-          console.log('[SW] Removing old cache', key);
           return caches.delete(key);
         }
       }));
+    }).then(() => {
+      // Diz para o SW controlar todas as abas abertas imediatamente
+      return self.clients.claim();
     })
   );
 });
 
-// 3. Fetch: Serve cache primeiro, depois rede (Stale-while-revalidate strategy)
+// 3. Fetch
 self.addEventListener('fetch', (event) => {
-  // Não cachear requisições do Firebase/Google APIs (Deixar a biblioteca do Firebase lidar com isso)
-  if (event.request.url.includes('firestore') || event.request.url.includes('googleapis')) {
+  // Ignora requisições do Firebase/Google (deixa a lib lidar)
+  if (event.request.url.includes('firestore') || 
+      event.request.url.includes('googleapis') ||
+      event.request.url.includes('identitytoolkit')) {
     return; 
   }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      // Retorna do cache se existir
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
-        // Atualiza o cache com a nova versão da rede
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      });
-      return cachedResponse || fetchPromise;
+      // Estratégia: Network First, falling back to cache (mais seguro para dados frescos)
+      return fetch(event.request)
+        .then((networkResponse) => {
+            return caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, networkResponse.clone());
+                return networkResponse;
+            });
+        })
+        .catch(() => cachedResponse); // Se offline, usa cache
     })
   );
 });
+
 
