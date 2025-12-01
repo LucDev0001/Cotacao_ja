@@ -1,125 +1,198 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ajuda - CotaçãoJá</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>body { font-family: 'Inter', sans-serif; }</style>
-</head>
-<body class="bg-slate-50 text-slate-800">
 
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800">
     <nav class="bg-white border-b border-slate-200 p-4 sticky top-0 z-10">
-        <div class="container mx-auto max-w-2xl flex justify-between items-center">
-            <h1 class="font-bold text-xl text-blue-900 flex items-center gap-2">
-                <i data-lucide="help-circle" class="text-blue-500"></i> Central de Ajuda
-            </h1>
-            <a href="index.html" class="text-sm font-bold text-blue-600 hover:underline">← Voltar ao App</a>
-        </div>
+      <div
+        class="container mx-auto max-w-2xl flex justify-between items-center"
+      >
+        <h1 class="font-bold text-xl text-blue-900 flex items-center gap-2">
+          <i data-lucide="help-circle" class="text-blue-500"></i> Central de
+          Ajuda
+        </h1>
+        <a
+          href="index.html"
+          class="text-sm font-bold text-blue-600 hover:underline"
+          >← Voltar ao App</a
+        >
+      </div>
     </nav>
 
     <main class="container mx-auto max-w-2xl px-4 py-8 space-y-8">
+      <!-- BLOCO 1: INSTALAÇÃO -->
+      <section
+        class="bg-white p-6 rounded-2xl shadow-sm border border-blue-100"
+      >
+        <h2
+          class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2"
+        >
+          <i data-lucide="download" class="text-blue-600"></i> Como Instalar o
+          App
+        </h2>
 
-        <!-- BLOCO 1: INSTALAÇÃO -->
-        <section class="bg-white p-6 rounded-2xl shadow-sm border border-blue-100">
-            <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <i data-lucide="download" class="text-blue-600"></i> Como Instalar o App
-            </h2>
-            
-            <div class="space-y-4">
-                <div class="bg-slate-50 p-4 rounded-xl">
-                    <h3 class="font-bold text-green-700 mb-1">📱 Android (Chrome)</h3>
-                    <p class="text-sm text-slate-600">
-                        1. Acesse o site.<br>
-                        2. Toque em "Instalar App" no topo da tela ou...<br>
-                        3. Toque nos 3 pontinhos do navegador e selecione <strong>"Instalar aplicativo"</strong>.
-                    </p>
-                </div>
+        <div class="space-y-4">
+          <div class="bg-slate-50 p-4 rounded-xl">
+            <h3 class="font-bold text-green-700 mb-1">📱 Android (Chrome)</h3>
+            <p class="text-sm text-slate-600">
+              1. Acesse o site.<br />
+              2. Toque em "Instalar App" no topo da tela ou...<br />
+              3. Toque nos 3 pontinhos do navegador e selecione
+              <strong>"Instalar aplicativo"</strong>.
+            </p>
+          </div>
 
-                <div class="bg-slate-50 p-4 rounded-xl">
-                    <h3 class="font-bold text-gray-700 mb-1">🍎 iPhone (iOS - Safari)</h3>
-                    <p class="text-sm text-slate-600">
-                        1. Toque no botão <strong>Compartilhar</strong> (ícone quadrado com seta).<br>
-                        2. Role para baixo e toque em <strong>"Adicionar à Tela de Início"</strong>.<br>
-                        3. Confirme clicando em "Adicionar".
-                    </p>
-                </div>
+          <div class="bg-slate-50 p-4 rounded-xl">
+            <h3 class="font-bold text-gray-700 mb-1">
+              🍎 iPhone (iOS - Safari)
+            </h3>
+            <p class="text-sm text-slate-600">
+              1. Toque no botão <strong>Compartilhar</strong> (ícone quadrado
+              com seta).<br />
+              2. Role para baixo e toque em
+              <strong>"Adicionar à Tela de Início"</strong>.<br />
+              3. Confirme clicando em "Adicionar".
+            </p>
+          </div>
 
-                <div class="bg-slate-50 p-4 rounded-xl">
-                    <h3 class="font-bold text-blue-700 mb-1">💻 Computador (Chrome/Edge)</h3>
-                    <p class="text-sm text-slate-600">
-                        Clique no ícone de "Computador com seta para baixo" que aparece na barra de endereço, no canto direito.
-                    </p>
-                </div>
+          <div class="bg-slate-50 p-4 rounded-xl">
+            <h3 class="font-bold text-blue-700 mb-1">
+              💻 Computador (Chrome/Edge)
+            </h3>
+            <p class="text-sm text-slate-600">
+              Clique no ícone de "Computador com seta para baixo" que aparece na
+              barra de endereço, no canto direito.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- BLOCO 2: PARA GERENTES -->
+      <section>
+        <h2
+          class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2"
+        >
+          <i data-lucide="shopping-bag" class="text-blue-600"></i> Para Gerentes
+          (Compradores)
+        </h2>
+        <ul class="space-y-3 text-sm text-slate-700">
+          <li class="flex gap-3">
+            <div class="bg-blue-100 p-2 rounded-lg h-fit">
+              <i data-lucide="plus" class="w-4 h-4 text-blue-600"></i>
             </div>
-        </section>
+            <div>
+              <strong>Criar Pedido:</strong> Digite o nome do produto, escolha a
+              categoria e clique em "Publicar".
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <div class="bg-orange-100 p-2 rounded-lg h-fit">
+              <i data-lucide="eye" class="w-4 h-4 text-orange-600"></i>
+            </div>
+            <div>
+              <strong>Ver Ofertas:</strong> Clique em "Ver Ofertas" no cartão do
+              pedido. Você verá o preço e quem ofertou. Clique no botão verde
+              para chamar no WhatsApp.
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <div class="bg-red-100 p-2 rounded-lg h-fit">
+              <i data-lucide="trash-2" class="w-4 h-4 text-red-600"></i>
+            </div>
+            <div>
+              <strong>Editar/Apagar:</strong> Use os ícones no canto superior
+              direito do cartão para corrigir erros ou remover pedidos antigos.
+            </div>
+          </li>
+        </ul>
+      </section>
 
-        <!-- BLOCO 2: PARA GERENTES -->
-        <section>
-            <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <i data-lucide="shopping-bag" class="text-blue-600"></i> Para Gerentes (Compradores)
-            </h2>
-            <ul class="space-y-3 text-sm text-slate-700">
-                <li class="flex gap-3">
-                    <div class="bg-blue-100 p-2 rounded-lg h-fit"><i data-lucide="plus" class="w-4 h-4 text-blue-600"></i></div>
-                    <div>
-                        <strong>Criar Pedido:</strong> Digite o nome do produto, escolha a categoria e clique em "Publicar".
-                    </div>
-                </li>
-                <li class="flex gap-3">
-                    <div class="bg-orange-100 p-2 rounded-lg h-fit"><i data-lucide="eye" class="w-4 h-4 text-orange-600"></i></div>
-                    <div>
-                        <strong>Ver Ofertas:</strong> Clique em "Ver Ofertas" no cartão do pedido. Você verá o preço e quem ofertou. Clique no botão verde para chamar no WhatsApp.
-                    </div>
-                </li>
-                <li class="flex gap-3">
-                    <div class="bg-red-100 p-2 rounded-lg h-fit"><i data-lucide="trash-2" class="w-4 h-4 text-red-600"></i></div>
-                    <div>
-                        <strong>Editar/Apagar:</strong> Use os ícones no canto superior direito do cartão para corrigir erros ou remover pedidos antigos.
-                    </div>
-                </li>
-            </ul>
-        </section>
-
-        <!-- BLOCO 3: PARA FORNECEDORES -->
-        <section>
-            <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <i data-lucide="truck" class="text-orange-600"></i> Para Fornecedores (Vendedores)
-            </h2>
-            <ul class="space-y-3 text-sm text-slate-700">
-                <li class="flex gap-3">
-                    <div class="bg-orange-100 p-2 rounded-lg h-fit"><i data-lucide="search" class="w-4 h-4 text-orange-600"></i></div>
-                    <div>
-                        <strong>Encontrar Pedidos:</strong> Use o filtro de categorias no topo para ver apenas o que você vende (ex: Bebidas).
-                    </div>
-                </li>
-                <li class="flex gap-3">
-                    <div class="bg-green-100 p-2 rounded-lg h-fit"><i data-lucide="dollar-sign" class="w-4 h-4 text-green-600"></i></div>
-                    <div>
-                        <strong>Enviar Oferta:</strong> Digite seu preço e clique em enviar. O gerente recebe na hora.
-                    </div>
-                </li>
-                <li class="flex gap-3">
-                    <div class="bg-blue-100 p-2 rounded-lg h-fit"><i data-lucide="list" class="w-4 h-4 text-blue-600"></i></div>
-                    <div>
-                        <strong>Minhas Ofertas:</strong> Clique na aba "Minhas Ofertas" para ver preços que você já enviou. Você pode alterar o valor ou cancelar a oferta por lá.
-                    </div>
-                </li>
-            </ul>
-        </section>
-
+      <!-- BLOCO 3: PARA FORNECEDORES -->
+      <section>
+        <h2
+          class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2"
+        >
+          <i data-lucide="truck" class="text-orange-600"></i> Para Fornecedores
+          (Vendedores)
+        </h2>
+        <ul class="space-y-3 text-sm text-slate-700">
+          <li class="flex gap-3">
+            <div class="bg-orange-100 p-2 rounded-lg h-fit">
+              <i data-lucide="search" class="w-4 h-4 text-orange-600"></i>
+            </div>
+            <div>
+              <strong>Encontrar Pedidos:</strong> Use o filtro de categorias no
+              topo para ver apenas o que você vende (ex: Bebidas).
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <div class="bg-green-100 p-2 rounded-lg h-fit">
+              <i data-lucide="dollar-sign" class="w-4 h-4 text-green-600"></i>
+            </div>
+            <div>
+              <strong>Enviar Oferta:</strong> Digite seu preço e clique em
+              enviar. O gerente recebe na hora.
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <div class="bg-blue-100 p-2 rounded-lg h-fit">
+              <i data-lucide="list" class="w-4 h-4 text-blue-600"></i>
+            </div>
+            <div>
+              <strong>Minhas Ofertas:</strong> Clique na aba "Minhas Ofertas"
+              para ver preços que você já enviou. Você pode alterar o valor ou
+              cancelar a oferta por lá.
+            </div>
+          </li>
+        </ul>
+      </section>
     </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm mt-8">
-        <p>&copy; 2025 CotaçãoJá.</p>
-        <p class="mt-2 text-xs">Desenvolvido por <a href="https://lucianodevfrontend.netlify.app/" target="_blank" class="text-blue-400 hover:text-white">SantosCodes</a></p>
-    </footer>
+    <!-- Rodapé -->
+    <div
+      class="text-center p-4 mt-8 text-sm text-slate-600"
+      style="background-color: rgba(0, 0, 0, 0.05)"
+    >
+      © 2024 Copyright:
+      <a class="font-bold text-slate-800" href="index.html">CotaçãoJá</a>
+      | Desenvolvido por
+      <strong
+        ><a
+          href="https://lucianodevfrontend.netlify.app/"
+          target="_blank"
+          class="text-slate-800 no-underline hover:underline"
+          >@santoscodes</a
+        ></strong
+      >
+      <span class="mx-2 text-slate-300">|</span>
+      <a href="termos.html" target="_blank" class="hover:underline"
+        >Termos de Uso</a
+      >
+      <span class="mx-2 text-slate-300">|</span>
+      <a href="politica.html" target="_blank" class="hover:underline"
+        >Política de Privacidade</a
+      >
+    </div>
 
     <script>
-        lucide.createIcons();
+      lucide.createIcons();
     </script>
-</body>
+  </body>
 </html>
-

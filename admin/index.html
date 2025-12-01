@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - CotaçãoJá</title>
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .fade-enter {
+        animation: fadeIn 0.3s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-slate-100 text-slate-800 antialiased">
+    <!-- TELA DE LOGIN -->
+    <div
+      id="login-screen"
+      class="flex items-center justify-center min-h-screen bg-slate-900"
+    >
+      <div
+        class="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl shadow-slate-800/50"
+      >
+        <div class="text-center mb-8">
+          <div
+            class="w-16 h-16 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center text-white mb-4"
+          >
+            <i data-lucide="shield-check" class="w-8 h-8"></i>
+          </div>
+          <h1 class="text-3xl font-bold text-slate-800">Painel Admin</h1>
+          <p class="text-slate-500 mt-1">Área restrita para gestão.</p>
+        </div>
+        <form id="login-form" class="space-y-5">
+          <div
+            id="login-error"
+            class="hidden bg-red-100 text-red-600 p-3 rounded-lg text-sm text-center"
+          ></div>
+          <input
+            type="email"
+            id="admin-email"
+            placeholder="E-mail"
+            class="w-full p-3.5 bg-slate-100 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            required
+          />
+          <input
+            type="password"
+            id="admin-password"
+            placeholder="Senha"
+            class="w-full p-3.5 bg-slate-100 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            required
+          />
+          <button
+            type="submit"
+            class="w-full bg-slate-800 text-white p-3.5 rounded-xl font-bold hover:bg-slate-900 transition flex items-center justify-center gap-2"
+          >
+            <i data-lucide="log-in" class="w-5 h-5"></i> Entrar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- PAINEL PRINCIPAL -->
+    <div id="admin-panel" class="hidden flex min-h-screen">
+      <!-- Sidebar -->
+      <aside
+        class="w-64 bg-slate-800 text-slate-300 flex flex-col p-4 fixed h-full z-20"
+      >
+        <div
+          class="font-bold text-2xl text-white tracking-tighter flex items-center gap-2 mb-10 px-2"
+        >
+          <div class="bg-slate-700 text-white p-1.5 rounded-lg">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          Admin
+        </div>
+        <nav class="flex flex-col space-y-2">
+          <button
+            onclick="showView('dashboard')"
+            class="nav-link bg-slate-700 text-white flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold transition"
+          >
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+          </button>
+          <button
+            onclick="showView('depoimentos')"
+            class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold hover:bg-slate-700 hover:text-white transition"
+          >
+            <i data-lucide="message-square-quote" class="w-5 h-5"></i>
+            Depoimentos
+          </button>
+          <button
+            onclick="showView('usuarios')"
+            class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold hover:bg-slate-700 hover:text-white transition"
+          >
+            <i data-lucide="users" class="w-5 h-5"></i> Usuários
+          </button>
+        </nav>
+        <div class="mt-auto">
+          <button
+            id="logout-btn"
+            class="flex items-center gap-3 w-full text-left px-3 py-2.5 rounded-lg font-bold text-red-400 hover:bg-red-500/20 transition"
+          >
+            <i data-lucide="log-out" class="w-5 h-5"></i> Sair
+          </button>
+        </div>
+      </aside>
+
+      <!-- Conteúdo -->
+      <main class="ml-64 flex-1 p-8">
+        <!-- VIEW: DASHBOARD -->
+        <div id="view-dashboard" class="admin-view fade-enter">
+          <h1 class="text-3xl font-extrabold text-slate-900 mb-8">Dashboard</h1>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div
+              class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4"
+            >
+              <div class="bg-blue-100 text-blue-600 p-3 rounded-xl">
+                <i data-lucide="users" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <p class="text-sm font-bold text-slate-500">Usuários</p>
+                <p id="stat-users" class="text-3xl font-bold">...</p>
+              </div>
+            </div>
+            <div
+              class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4"
+            >
+              <div class="bg-green-100 text-green-600 p-3 rounded-xl">
+                <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <p class="text-sm font-bold text-slate-500">Pedidos</p>
+                <p id="stat-pedidos" class="text-3xl font-bold">...</p>
+              </div>
+            </div>
+            <div
+              class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4"
+            >
+              <div class="bg-yellow-100 text-yellow-600 p-3 rounded-xl">
+                <i data-lucide="message-square-quote" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <p class="text-sm font-bold text-slate-500">Pendentes</p>
+                <p
+                  id="stat-depoimentos"
+                  class="text-3xl font-bold text-yellow-500"
+                >
+                  ...
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div
+              class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200"
+            >
+              <h2 class="font-bold text-slate-800 mb-4">Novos Usuários</h2>
+              <canvas id="usersChart"></canvas>
+            </div>
+            <div
+              class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200"
+            >
+              <h2 class="font-bold text-slate-800 mb-4">Novos Pedidos</h2>
+              <canvas id="pedidosChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW: DEPOIMENTOS -->
+        <div id="view-depoimentos" class="admin-view hidden fade-enter">
+          <h1 class="text-3xl font-extrabold text-slate-900 mb-8">
+            Gerenciar Depoimentos
+          </h1>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <h2
+                class="font-bold text-slate-500 mb-4 text-sm uppercase tracking-wider border-b pb-2"
+              >
+                Pendentes de Aprovação
+              </h2>
+              <div id="depoimentos-pendentes" class="space-y-4 min-h-[100px]">
+                <p class="text-slate-400 text-sm">Nenhum pendente.</p>
+              </div>
+            </div>
+            <div>
+              <h2
+                class="font-bold text-slate-500 mb-4 text-sm uppercase tracking-wider border-b pb-2"
+              >
+                Publicados
+              </h2>
+              <div id="depoimentos-aprovados" class="space-y-4 min-h-[100px]">
+                <p class="text-slate-400 text-sm">Nenhum aprovado.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW: USUÁRIOS -->
+        <div id="view-usuarios" class="admin-view hidden fade-enter">
+          <h1 class="text-3xl font-extrabold text-slate-900 mb-8">
+            Base de Usuários
+          </h1>
+          <div
+            class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"
+          >
+            <table class="w-full text-sm text-left">
+              <thead class="bg-slate-50 text-slate-500 uppercase font-bold">
+                <tr>
+                  <th class="p-4">Nome</th>
+                  <th class="p-4">Email</th>
+                  <th class="p-4">Tipo</th>
+                  <th class="p-4">WhatsApp</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body" class="divide-y divide-slate-100">
+                <tr>
+                  <td colspan="4" class="p-4 text-center text-slate-400">
+                    Carregando...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        onSnapshot,
+        query,
+        getDocs,
+        getDoc,
+        where,
+        doc,
+        updateDoc,
+        deleteDoc,
+        getCountFromServer,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+      // 🔴 SUAS CHAVES AQUI
+      const firebaseConfig = {
+        apiKey: "AIzaSyAhPYUnom0B7vXOjqf5eyMzye8f-Mp97Yw",
+        authDomain: "leilaoreverso-af6e1.firebaseapp.com",
+        projectId: "leilaoreverso-af6e1",
+        storageBucket: "leilaoreverso-af6e1.firebasestorage.app",
+        messagingSenderId: "1011226599836",
+        appId: "1:1011226599836:web:e1f033e9ec9a1101896859",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // --- LOGICA DE LOGIN ---
+      onAuthStateChanged(auth, async (user) => {
+        const loginScreen = document.getElementById("login-screen");
+        const adminPanel = document.getElementById("admin-panel");
+
+        if (user) {
+          try {
+            // Verifica permissão no banco
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists() && userDoc.data().role === "admin") {
+              loginScreen.classList.add("hidden");
+              adminPanel.classList.remove("hidden");
+              initAdminPanel();
+            } else {
+              throw new Error("Acesso negado. Usuário não é admin.");
+            }
+          } catch (error) {
+            console.error(error);
+            await signOut(auth);
+            alert("Erro: " + error.message);
+            loginScreen.classList.remove("hidden");
+            adminPanel.classList.add("hidden");
+          }
+        } else {
+          loginScreen.classList.remove("hidden");
+          adminPanel.classList.add("hidden");
+        }
+      });
+
+      document.getElementById("login-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("admin-email").value;
+        const pass = document.getElementById("admin-password").value;
+        const errDiv = document.getElementById("login-error");
+
+        signInWithEmailAndPassword(auth, email, pass).catch((error) => {
+          errDiv.innerText = "Erro: Email ou senha inválidos.";
+          errDiv.classList.remove("hidden");
+        });
+      });
+
+      document
+        .getElementById("logout-btn")
+        .addEventListener("click", () => signOut(auth));
+
+      // --- NAVEGAÇÃO ---
+      window.showView = (viewId) => {
+        document
+          .querySelectorAll(".admin-view")
+          .forEach((v) => v.classList.add("hidden"));
+        document.getElementById(`view-${viewId}`).classList.remove("hidden");
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((l) => l.classList.remove("bg-slate-700", "text-white"));
+        event.currentTarget.classList.add("bg-slate-700", "text-white");
+      };
+
+      function initAdminPanel() {
+        loadStats();
+        loadDepoimentos();
+        loadUsers();
+        loadCharts();
+        lucide.createIcons();
+      }
+
+      // --- DADOS ---
+      async function loadStats() {
+        try {
+          const uSnap = await getCountFromServer(collection(db, "users"));
+          document.getElementById("stat-users").innerText = uSnap.data().count;
+
+          const pSnap = await getCountFromServer(collection(db, "pedidos"));
+          document.getElementById("stat-pedidos").innerText =
+            pSnap.data().count;
+
+          const dSnap = await getCountFromServer(
+            query(
+              collection(db, "depoimentos"),
+              where("status", "==", "pendente")
+            )
+          );
+          document.getElementById("stat-depoimentos").innerText =
+            dSnap.data().count;
+        } catch (e) {
+          console.error("Erro ao carregar stats:", e.message);
+        }
+      }
+
+      function loadDepoimentos() {
+        const pendentes = document.getElementById("depoimentos-pendentes");
+        const aprovados = document.getElementById("depoimentos-aprovados");
+
+        const q = query(collection(db, "depoimentos"));
+
+        // Usamos um try-catch para o listener também
+        onSnapshot(
+          q,
+          (snap) => {
+            pendentes.innerHTML = "";
+            aprovados.innerHTML = "";
+            snap.forEach((docSnap) => {
+              const data = { id: docSnap.id, ...docSnap.data() };
+              const html = `
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <div class="flex justify-between items-start mb-2">
+                            <div><p class="font-bold text-slate-800">${
+                              data.usuarioNome
+                            }</p><p class="text-xs text-slate-400 uppercase">${
+                data.tipoUsuario
+              }</p></div>
+                            <div class="flex gap-2">
+                                ${
+                                  data.status === "pendente"
+                                    ? `<button onclick="rejeitarDepoimento('${data.id}')" class="p-1.5 bg-red-100 text-red-600 rounded hover:bg-red-200"><i data-lucide="x" class="w-4 h-4"></i></button>
+                                 <button onclick="aprovarDepoimento('${data.id}')" class="p-1.5 bg-green-100 text-green-600 rounded hover:bg-green-200"><i data-lucide="check" class="w-4 h-4"></i></button>`
+                                    : `<button onclick="rejeitarDepoimento('${data.id}')" class="p-1.5 bg-slate-100 text-slate-500 rounded hover:bg-red-100 hover:text-red-500" title="Remover"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`
+                                }
+                            </div>
+                        </div>
+                        <p class="text-slate-600 italic text-sm">"${
+                          data.texto
+                        }"</p>
+                    </div>`;
+              if (data.status === "pendente") pendentes.innerHTML += html;
+              else aprovados.innerHTML += html;
+            });
+            lucide.createIcons();
+          },
+          (error) => {
+            console.error("Erro no listener de depoimentos:", error.message);
+            pendentes.innerHTML = `<p class="text-red-500 text-sm">Erro ao carregar depoimentos.</p>`;
+          }
+        );
+      }
+
+      function loadUsers() {
+        const tbody = document.getElementById("users-table-body");
+        onSnapshot(
+          query(collection(db, "users")),
+          (snap) => {
+            // Esta query pode falhar se as regras não permitirem 'list'
+            tbody.innerHTML = "";
+            snap.forEach((docSnap) => {
+              const u = docSnap.data();
+              tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 border-b border-slate-50">
+                        <td class="p-4 font-bold text-slate-700">${
+                          u.nome || "-"
+                        }</td>
+                        <td class="p-4 text-slate-500">${u.email}</td>
+                        <td class="p-4"><span class="px-2 py-1 rounded text-xs font-bold uppercase ${
+                          u.tipo === "gerente"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-orange-100 text-orange-700"
+                        }">${u.tipo || "N/A"}</span></td>
+                        <td class="p-4 text-slate-400 font-mono text-xs">${
+                          u.whatsapp || "-"
+                        }</td>
+                    </tr>`;
+            });
+          },
+          (error) => {
+            console.error("Erro no listener de usuários:", error.message);
+            tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500">Erro ao carregar usuários. Verifique as permissões.</td></tr>`;
+          }
+        );
+      }
+
+      async function loadCharts() {
+        const users = await getDocs(collection(db, "users"));
+        const pedidos = await getDocs(collection(db, "pedidos"));
+
+        // Simples contagem por mês (simulação para MVP)
+        const labels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"];
+        const dataUsers = [0, 2, 5, 8, 12, users.size];
+        const dataPedidos = [0, 5, 15, 20, 35, pedidos.size];
+
+        new Chart(document.getElementById("usersChart"), {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Usuários",
+                data: dataUsers,
+                borderColor: "#3b82f6",
+                tension: 0.4,
+                fill: true,
+                backgroundColor: "rgba(59, 130, 246, 0.1)",
+              },
+            ],
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } },
+          },
+        });
+
+        new Chart(document.getElementById("pedidosChart"), {
+          type: "bar",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Pedidos",
+                data: dataPedidos,
+                backgroundColor: "#22c55e",
+                borderRadius: 4,
+              },
+            ],
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } },
+          },
+        });
+      }
+
+      // Funções globais
+      window.aprovarDepoimento = async (id) => {
+        await updateDoc(doc(db, "depoimentos", id), { status: "aprovado" });
+        loadStats();
+      };
+      window.rejeitarDepoimento = async (id) => {
+        if (confirm("Apagar?")) {
+          await deleteDoc(doc(db, "depoimentos", id));
+          loadStats();
+        }
+      };
+
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

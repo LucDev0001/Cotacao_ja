@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meu Perfil - CotaçãoJá</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800">
+    <nav class="bg-white border-b border-slate-200 p-4 sticky top-0 z-10">
+      <div
+        class="container mx-auto max-w-2xl flex justify-between items-center"
+      >
+        <h1 class="font-bold text-xl text-blue-900 flex items-center gap-2">
+          <div class="bg-blue-100 p-1.5 rounded-lg text-blue-600">
+            <i data-lucide="user-cog" class="w-5 h-5"></i>
+          </div>
+          Meu Perfil
+        </h1>
+        <a
+          href="index.html"
+          class="flex items-center gap-1 text-sm font-bold text-blue-600 hover:text-blue-800 transition bg-blue-50 px-3 py-1.5 rounded-full"
+        >
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar
+        </a>
+      </div>
+    </nav>
+
+    <main class="container mx-auto max-w-2xl px-4 py-8 space-y-6">
+      <!-- Cartão de Dados -->
+      <div
+        class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden"
+      >
+        <div
+          class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl -mr-10 -mt-10"
+        ></div>
+
+        <h2
+          class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2 relative z-10"
+        >
+          <i data-lucide="file-edit" class="w-5 h-5 text-blue-500"></i> Seus
+          Dados
+        </h2>
+
+        <div id="loading-state" class="text-center text-slate-400 py-10">
+          <i
+            data-lucide="loader-2"
+            class="w-8 h-8 animate-spin mx-auto mb-2"
+          ></i>
+          <p>Carregando...</p>
+        </div>
+
+        <form id="profile-form" class="hidden space-y-5 relative z-10">
+          <div>
+            <label
+              for="nome"
+              class="text-xs uppercase font-bold text-slate-400 mb-1.5 block tracking-wider"
+              >Nome da Empresa / Pessoa</label
+            >
+            <div class="relative">
+              <i
+                data-lucide="user"
+                class="absolute left-4 top-3.5 text-slate-400 w-5 h-5"
+              ></i>
+              <input
+                type="text"
+                id="nome"
+                class="w-full pl-12 p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-medium text-slate-700"
+              />
+            </div>
+          </div>
+          <div>
+            <label
+              for="whatsapp"
+              class="text-xs uppercase font-bold text-slate-400 mb-1.5 block tracking-wider"
+              >WhatsApp</label
+            >
+            <div class="relative">
+              <i
+                data-lucide="phone"
+                class="absolute left-4 top-3.5 text-slate-400 w-5 h-5"
+              ></i>
+              <input
+                type="tel"
+                id="whatsapp"
+                class="w-full pl-12 p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-medium text-slate-700"
+              />
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button
+              type="submit"
+              id="btn-save-profile"
+              class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition active:scale-95 flex items-center justify-center gap-2"
+            >
+              <i data-lucide="save" class="w-5 h-5"></i> Salvar Alterações
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Contêiner para layout flexível em desktop -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Seção de Depoimento -->
+        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+          <h2
+            class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2"
+          >
+            <i
+              data-lucide="message-square-quote"
+              class="w-5 h-5 text-orange-500"
+            ></i>
+            Seu Depoimento
+          </h2>
+          <p class="text-slate-500 text-sm mb-6">
+            Compartilhe sua experiência. Se aprovado, aparecerá na página
+            inicial.
+          </p>
+
+          <div id="depoimento-container">
+            <!-- Conteúdo inserido via JS -->
+          </div>
+        </div>
+
+        <!-- Seção de Alterar Senha -->
+        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+          <h2
+            class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2"
+          >
+            <i data-lucide="lock" class="w-5 h-5 text-slate-500"></i>
+            Alterar Senha
+          </h2>
+
+          <form id="password-change-form" class="space-y-4">
+            <div>
+              <label
+                for="new-password"
+                class="text-xs uppercase font-bold text-slate-400 mb-1.5 block tracking-wider"
+                >Nova Senha</label
+              >
+              <input
+                type="password"
+                id="new-password"
+                placeholder="••••••••"
+                class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-medium text-slate-700"
+              />
+              <p class="text-xs text-slate-400 mt-2">
+                A senha deve ter no mínimo 6 caracteres.
+              </p>
+            </div>
+            <button
+              type="submit"
+              id="btn-change-password"
+              class="w-full bg-slate-800 text-white p-3.5 rounded-xl font-bold hover:bg-slate-900 transition flex items-center justify-center gap-2 shadow-lg shadow-slate-200"
+            >
+              <i data-lucide="shield-check" class="w-5 h-5"></i> Alterar Senha
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        updateDoc,
+        setDoc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        updatePassword,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAhPYUnom0B7vXOjqf5eyMzye8f-Mp97Yw",
+        authDomain: "leilaoreverso-af6e1.firebaseapp.com",
+        projectId: "leilaoreverso-af6e1",
+        storageBucket: "leilaoreverso-af6e1.firebasestorage.app",
+        messagingSenderId: "1011226599836",
+        appId: "1:1011226599836:web:e1f033e9ec9a1101896859",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      const form = document.getElementById("profile-form");
+      const loading = document.getElementById("loading-state");
+      const nomeInput = document.getElementById("nome");
+      const whatsappInput = document.getElementById("whatsapp");
+      const btnSave = document.getElementById("btn-save-profile");
+      const depoimentoContainer = document.getElementById(
+        "depoimento-container"
+      );
+
+      let currentUserId = null;
+      let currentUserData = null;
+
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          currentUserId = user.uid;
+          const userDocRef = doc(db, "users", user.uid);
+          const userDoc = await getDoc(userDocRef);
+
+          if (userDoc.exists()) {
+            currentUserData = userDoc.data();
+            nomeInput.value = currentUserData.nome || "";
+            whatsappInput.value = currentUserData.whatsapp || "";
+          }
+
+          loading.classList.add("hidden");
+          form.classList.remove("hidden");
+        } else {
+          window.location.href = "index.html";
+        }
+
+        // Garante que os dados do usuário estejam disponíveis antes de carregar o depoimento.
+        // Esta chamada é crucial para exibir a seção de depoimentos.
+        if (currentUserId && currentUserData) {
+          await carregarDepoimento(
+            currentUserId,
+            currentUserData.nome,
+            currentUserData.tipo
+          );
+        }
+
+        lucide.createIcons();
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!currentUserId) return;
+
+        btnSave.disabled = true;
+        btnSave.innerHTML =
+          '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Salvando...';
+        lucide.createIcons();
+
+        const userDocRef = doc(db, "users", currentUserId);
+        await updateDoc(userDocRef, {
+          nome: nomeInput.value,
+          whatsapp: whatsappInput.value.replace(/\D/g, ""),
+        });
+
+        alert("Perfil atualizado com sucesso!");
+        btnSave.disabled = false;
+        btnSave.innerHTML =
+          '<i data-lucide="save" class="w-5 h-5"></i> Salvar Alterações';
+        lucide.createIcons();
+      });
+
+      document
+        .getElementById("password-change-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newPassword = document.getElementById("new-password").value;
+          const user = auth.currentUser;
+
+          if (!user) return;
+          if (newPassword.length < 6) {
+            return alert("A nova senha deve ter pelo menos 6 caracteres.");
+          }
+
+          const btn = document.getElementById("btn-change-password");
+          btn.disabled = true;
+          btn.innerHTML =
+            '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Alterando...';
+          lucide.createIcons();
+
+          try {
+            await updatePassword(user, newPassword);
+            alert(
+              "Senha alterada com sucesso! Você será deslogado por segurança."
+            );
+            auth.signOut();
+          } catch (error) {
+            console.error("Erro ao alterar senha:", error);
+            alert(
+              "Erro: " +
+                error.message +
+                "\n\nPor segurança, faça login novamente e tente de novo."
+            );
+          }
+        });
+
+      async function carregarDepoimento(userId, userName, userType) {
+        const depoimentoRef = doc(db, "depoimentos", userId);
+        const depoimentoDoc = await getDoc(depoimentoRef);
+
+        if (depoimentoDoc.exists()) {
+          const data = depoimentoDoc.data();
+
+          let statusBadge = "";
+          if (data.status === "aprovado")
+            statusBadge =
+              '<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold uppercase">Aprovado</span>';
+          else
+            statusBadge =
+              '<span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-bold uppercase">Pendente</span>';
+
+          depoimentoContainer.innerHTML = `
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Seu feedback</span>
+                            ${statusBadge}
+                        </div>
+                        <p class="text-slate-700 italic text-lg leading-relaxed">"${data.texto}"</p>
+                    </div>
+                `;
+        } else {
+          depoimentoContainer.innerHTML = `
+                    <form id="form-depoimento">
+                        <textarea id="depoimento-texto" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition resize-none text-slate-700" rows="3" placeholder="Escreva aqui como a plataforma ajudou você..."></textarea>
+                        <button type="submit" class="mt-4 w-full bg-slate-800 text-white p-3.5 rounded-xl font-bold hover:bg-slate-900 transition flex items-center justify-center gap-2 shadow-lg shadow-slate-200">
+                            <i data-lucide="send" class="w-4 h-4"></i> Enviar Depoimento
+                        </button>
+                    </form>
+                `;
+          lucide.createIcons();
+
+          document
+            .getElementById("form-depoimento")
+            .addEventListener("submit", async (e) => {
+              e.preventDefault();
+              const texto = document.getElementById("depoimento-texto").value;
+              if (!texto) return alert("Por favor, escreva seu depoimento.");
+
+              const btn = e.target.querySelector("button");
+              btn.disabled = true;
+              btn.innerHTML =
+                '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Enviando...';
+              lucide.createIcons();
+
+              try {
+                await setDoc(depoimentoRef, {
+                  texto: texto,
+                  usuarioId: userId,
+                  usuarioNome: userName,
+                  tipoUsuario: userType,
+                  createdAt: serverTimestamp(),
+                  status: "pendente",
+                });
+                alert("Obrigado! Seu depoimento foi enviado para aprovação.");
+                carregarDepoimento(userId, userName, userType);
+              } catch (error) {
+                console.error(error);
+                alert("Erro ao enviar depoimento.");
+                btn.disabled = false;
+                btn.innerHTML =
+                  '<i data-lucide="send" class="w-4 h-4"></i> Enviar Depoimento';
+                lucide.createIcons();
+              }
+            });
+        }
+      }
+
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
