@@ -81,7 +81,9 @@
       }
     </style>
   </head>
-  <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+  <body
+    class="bg-slate-50 text-slate-800 flex flex-col min-h-screen overflow-x-hidden"
+  >
     <!-- ======================================================= -->
     <!-- 1. LANDING PAGE (Visitantes) -->
     <!-- ======================================================= -->
@@ -229,7 +231,7 @@
 
       <!-- Seção de Depoimentos -->
       <section class="py-20 bg-white border-t border-slate-100">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-6 relative">
           <div class="text-center mb-12">
             <h2 class="text-3xl font-bold text-slate-800 mb-3">
               Quem usa, aprova
@@ -239,6 +241,19 @@
               plataforma.
             </p>
           </div>
+
+          <!-- Botões de Navegação do Carrossel -->
+          <div class="absolute top-1/2 left-0 -translate-y-1/2 z-10 hidden md:block">
+              <button id="carousel-prev" class="bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-md border border-slate-100 text-slate-500 hover:text-blue-600 hover:bg-white transition">
+                  <i data-lucide="chevron-left" class="w-6 h-6"></i>
+              </button>
+          </div>
+          <div class="absolute top-1/2 right-0 -translate-y-1/2 z-10 hidden md:block">
+              <button id="carousel-next" class="bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-md border border-slate-100 text-slate-500 hover:text-blue-600 hover:bg-white transition">
+                  <i data-lucide="chevron-right" class="w-6 h-6"></i>
+              </button>
+          </div>
+
 
           <!-- Carrossel -->
           <div
@@ -910,6 +925,24 @@
         }
       }
 
+      // --- CONTROLES DO CARROSSEL DE DEPOIMENTOS ---
+      function setupCarouselControls() {
+        const carousel = document.getElementById('depoimentos-carousel');
+        const prevBtn = document.getElementById('carousel-prev');
+        const nextBtn = document.getElementById('carousel-next');
+        if (!carousel || !prevBtn || !nextBtn) return;
+
+        const scrollAmount = 324; // Largura aproximada de um card + gap
+
+        nextBtn.addEventListener('click', () => {
+          carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+
+        prevBtn.addEventListener('click', () => {
+          carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+      }
+
       // --- REAL-TIME ACTIVITY FEED (LANDING PAGE) ---
       function setupActivityFeedListener() {
         const activityQueue = [];
@@ -1162,6 +1195,7 @@
           document.getElementById("landing-screen").classList.remove("hidden");
           if (deferredPrompt) btnInstall.classList.remove("hidden");
           carregarDepoimentos();
+          setupCarouselControls(); // Inicia os controles do carrossel
           currentUserData = null;
         }
       });
@@ -1261,9 +1295,10 @@
                                         data.fornecedorVencedorNome
                                       }</div>
                                   </div>
-                                  <a href="https://wa.me/${
-                                    data.fornecedorVencedorWhatsapp
-                                  }?text=Olá ${
+                                  <a href="https://wa.me/${data.fornecedorVencedorWhatsapp.replace(
+                                    /\D/g,
+                                    ""
+                                  )}?text=Olá ${
               data.fornecedorVencedorNome
             }, sobre a sua oferta de R$${
               data.valorVencedor
