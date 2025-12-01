@@ -3,170 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CotaçãoJá - Sistema Inteligente</title>
+    <title>CotaçãoJá - Sistema de Compras</title>
+    
+    <!-- Estilos e Fontes -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1e3a8a">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+
     <style>
         body { font-family: 'Inter', sans-serif; }
         .fade-enter { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Botão Flutuante de Instalação */
         .install-btn-float {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 100; animation: bounce 2s infinite;
+            z-index: 100; animation: bounce 3s infinite;
         }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);} 40% {transform: translateX(-50%) translateY(-10px);} 60% {transform: translateX(-50%) translateY(-5px);} }
+        @keyframes bounce { 
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);} 
+            40% {transform: translateX(-50%) translateY(-8px);} 
+            60% {transform: translateX(-50%) translateY(-4px);} 
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
-    <!-- BOTÃO DE INSTALAÇÃO -->
-    <button id="btn-install-app" class="hidden install-btn-float bg-blue-900 text-white px-6 py-3 rounded-full shadow-2xl font-bold border-2 border-blue-400 flex items-center gap-2">
-        <i data-lucide="download-cloud"></i> Instalar App
+    <!-- BOTÃO DE INSTALAÇÃO (Controlado via JS) -->
+    <button id="btn-install-app" class="hidden install-btn-float bg-blue-900 text-white px-6 py-3 rounded-full shadow-xl shadow-blue-900/40 font-bold border border-blue-700 flex items-center gap-2 hover:scale-105 transition">
+        <i data-lucide="download-cloud" class="w-5 h-5"></i> Instalar App
     </button>
 
-    <!-- 1. LANDING PAGE -->
-    <div id="landing-screen" class="flex-grow flex flex-col">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center bg-white shadow-sm">
+    <!-- ======================================================= -->
+    <!-- 1. LANDING PAGE (Visitantes) -->
+    <!-- ======================================================= -->
+    <div id="landing-screen" class="flex-grow flex flex-col fade-enter">
+        
+        <nav class="container mx-auto px-6 py-5 flex justify-between items-center">
             <div class="font-bold text-2xl text-blue-900 tracking-tighter flex items-center gap-2">
-                <i data-lucide="shopping-bag" class="text-blue-600"></i> Cotação<span class="text-blue-500">Já</span>
+                <i data-lucide="layers" class="text-blue-600"></i> Cotação<span class="text-blue-500">Já</span>
             </div>
-            <div class="flex items-center gap-3">
-                <a href="faq.html" class="text-slate-500 hover:text-blue-600 text-sm font-medium hidden sm:block">Como usar?</a>
-                <button onclick="mostrarLogin()" class="text-blue-900 font-semibold hover:text-blue-600 transition text-sm border border-blue-200 px-4 py-2 rounded-full hover:bg-blue-50">Entrar</button>
+            <div class="flex items-center gap-4">
+                <a href="faq.html" class="text-slate-500 hover:text-blue-600 text-sm font-medium hidden sm:block">Como funciona?</a>
+                <button onclick="mostrarLogin()" class="text-blue-900 font-bold hover:text-blue-600 transition text-sm border border-blue-200 px-5 py-2 rounded-full hover:bg-blue-50">Entrar</button>
             </div>
         </nav>
 
-        <header class="flex-1 container mx-auto px-6 flex flex-col md:flex-row items-center justify-center gap-12 py-16">
-            <div class="md:w-1/2 space-y-6 text-center md:text-left">
-                <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Gestão de Compras 2.0</span>
+        <header class="flex-1 container mx-auto px-6 flex flex-col md:flex-row items-center justify-center gap-12 py-12">
+            <div class="md:w-1/2 space-y-8 text-center md:text-left">
+                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">B2B Inteligente</span>
                 <h1 class="text-4xl md:text-6xl font-extrabold leading-tight text-slate-900">
-                    Conectando <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Lojas e Fornecedores</span>.
+                    A forma mais inteligente de <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">comprar e vender</span>.
                 </h1>
-                <p class="text-lg text-slate-600 md:max-w-lg leading-relaxed">
-                    Gerencie pedidos, compare preços e feche negócios no WhatsApp. Tudo em tempo real.
+                <p class="text-lg text-slate-600 md:max-w-md leading-relaxed">
+                    Lojas economizam tempo cotando com múltiplos fornecedores. Fornecedores encontram compradores prontos para fechar negócio.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
-                    <button onclick="mostrarLogin()" class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-blue-200 hover:bg-blue-700 transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                        Começar Agora <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <button onclick="mostrarLogin()" class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-blue-500/20 hover:bg-blue-700 transition transform hover:-translate-y-1">
+                        Começar Agora
                     </button>
-                    <a href="faq.html" class="sm:hidden block text-blue-600 font-bold py-4 underline">Ver instruções de uso</a>
+                    <a href="faq.html" class="flex items-center justify-center gap-2 text-slate-600 font-bold px-8 py-4 rounded-xl hover:bg-slate-100 transition">
+                        <i data-lucide="help-circle" class="w-5 h-5"></i> Ajuda
+                    </a>
                 </div>
             </div>
-            
-            <div class="md:w-1/2 relative flex justify-center">
-                <div class="absolute inset-0 bg-blue-200 rounded-full blur-3xl opacity-30 animate-pulse"></div>
-                <div class="bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 w-full max-w-sm relative z-10 transform rotate-1 hover:rotate-0 transition duration-500">
-                    <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-                        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600"><i data-lucide="package"></i></div>
-                        <div>
-                            <div class="text-sm font-bold text-slate-800">Pedido #4092</div>
-                            <div class="text-xs text-slate-500">Aguardando ofertas</div>
+
+            <!-- Ilustração CSS Puro -->
+            <div class="md:w-1/2 flex justify-center relative">
+                <div class="absolute inset-0 bg-gradient-to-tr from-blue-200 to-indigo-200 rounded-full blur-3xl opacity-40 animate-pulse"></div>
+                <div class="relative bg-white p-6 rounded-3xl shadow-2xl border border-slate-100 w-full max-w-sm transform rotate-2 hover:rotate-0 transition duration-700">
+                    <div class="flex justify-between items-center mb-6 border-b border-slate-50 pb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600"><i data-lucide="package"></i></div>
+                            <div>
+                                <div class="text-sm font-bold text-slate-800">Cerveja 350ml</div>
+                                <div class="text-xs text-slate-400">100 caixas</div>
+                            </div>
                         </div>
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-xs font-bold">3</div>
                     </div>
                     <div class="space-y-3">
-                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 flex justify-between items-center">
-                            <span class="text-sm font-medium">Fornecedor A</span>
-                            <span class="text-sm font-bold text-green-600">R$ 150,00</span>
+                        <div class="bg-slate-50 rounded-xl p-3 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-xs font-bold">A</div>
+                                <span class="text-sm font-bold text-slate-600">Fornecedor A</span>
+                            </div>
+                            <span class="text-sm font-bold text-slate-400">R$ 2.800</span>
+                        </div>
+                        <div class="bg-green-50 rounded-xl p-3 flex items-center justify-between border border-green-100 shadow-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold">B</div>
+                                <span class="text-sm font-bold text-green-800">Fornecedor B</span>
+                            </div>
+                            <span class="text-sm font-bold text-green-700">R$ 2.650</span>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
+
+        <footer class="bg-white border-t border-slate-200 py-8 text-center text-sm text-slate-500">
+            <p>&copy; 2025 CotaçãoJá. Todos os direitos reservados.</p>
+        </footer>
     </div>
 
-    <!-- 2. LOGIN / CADASTRO -->
+    <!-- ======================================================= -->
+    <!-- 2. TELA DE LOGIN / CADASTRO (Com PF/PJ) -->
+    <!-- ======================================================= -->
     <div id="auth-screen" class="hidden min-h-screen flex items-center justify-center p-4 bg-slate-100 fade-enter fixed inset-0 z-50 overflow-y-auto">
-        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md relative my-8">
-            <button onclick="voltarInicio()" class="absolute top-6 left-6 text-slate-400 hover:text-slate-600"><i data-lucide="arrow-left"></i></button>
+        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md relative my-8 border border-slate-100">
+            <button onclick="voltarInicio()" class="absolute top-6 left-6 text-slate-400 hover:text-slate-600 transition"><i data-lucide="arrow-left"></i></button>
             
-            <div class="text-center mb-8 mt-2">
-                <h2 class="text-2xl font-bold text-slate-800">Bem-vindo</h2>
-                <p class="text-slate-500 text-sm">Acesse sua conta para continuar</p>
+            <div class="text-center mb-8 mt-4">
+                <div class="w-12 h-12 bg-blue-600 rounded-xl mx-auto flex items-center justify-center text-white mb-4 shadow-lg shadow-blue-500/30">
+                    <i data-lucide="user" class="w-6 h-6"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">Acessar Sistema</h2>
+                <p class="text-slate-500 text-sm">Entre para cotar ou vender</p>
             </div>
             
             <div class="space-y-4">
-                <div>
-                    <input type="email" id="email" placeholder="E-mail" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <!-- Login Fields -->
+                <div class="space-y-4">
+                    <input type="email" id="email" placeholder="Seu E-mail" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    <input type="password" id="password" placeholder="Sua Senha" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                 </div>
-                <div>
-                    <input type="password" id="password" placeholder="Senha" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                </div>
-                
-                <div id="signup-fields" class="hidden space-y-4 pt-2 border-t border-slate-100 fade-enter">
-                    <input type="text" id="nome" placeholder="Nome da Empresa/Pessoa" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                    <input type="tel" id="whatsapp" placeholder="WhatsApp (DDD + Número)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
+
+                <!-- Cadastro Fields (Hidden by default) -->
+                <div id="signup-fields" class="hidden space-y-4 pt-4 border-t border-slate-100 fade-enter">
+                    <input type="text" id="nome" placeholder="Nome da Empresa ou Pessoa" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
                     
-                    <!-- SELETOR PF / PJ -->
-                    <div class="flex gap-4 px-2">
+                    <div class="relative">
+                        <input type="tel" id="whatsapp" placeholder="WhatsApp (DDD + Número)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                        <i data-lucide="phone" class="absolute right-4 top-4 text-slate-400 w-5 h-5"></i>
+                    </div>
+
+                    <!-- Toggle PF / PJ -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex justify-around">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="radio" name="tipoPessoa" value="pf" checked onchange="toggleDocInput()" class="accent-blue-600 w-4 h-4">
-                            <span class="text-sm font-bold text-slate-600">Pessoa Física (CPF)</span>
+                            <span class="text-sm font-bold text-slate-600">Pessoa Física</span>
                         </label>
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="radio" name="tipoPessoa" value="pj" onchange="toggleDocInput()" class="accent-blue-600 w-4 h-4">
-                            <span class="text-sm font-bold text-slate-600">Jurídica (CNPJ)</span>
+                            <span class="text-sm font-bold text-slate-600">Jurídica</span>
                         </label>
                     </div>
 
-                    <!-- Inputs de Documento -->
-                    <input type="tel" id="cpfInput" placeholder="Digite seu CPF" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                    <input type="tel" id="cnpjInput" placeholder="Digite seu CNPJ" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl hidden">
+                    <input type="tel" id="cpfInput" placeholder="Seu CPF (Somente números)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="tel" id="cnpjInput" placeholder="Seu CNPJ (Somente números)" class="hidden w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
 
                     <div class="relative">
-                        <select id="tipoUser" class="w-full p-4 bg-white border border-slate-200 rounded-xl appearance-none text-slate-600">
-                            <option value="fornecedor">Sou Fornecedor (Vender)</option>
-                            <option value="gerente">Sou Gerente (Comprar)</option>
+                        <select id="tipoUser" class="w-full p-4 bg-white border border-slate-200 rounded-xl appearance-none text-slate-600 font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option value="fornecedor">Sou Fornecedor (Quero Vender)</option>
+                            <option value="gerente">Sou Gerente (Quero Comprar)</option>
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-4 top-4 text-slate-400 w-5 h-5 pointer-events-none"></i>
                     </div>
                 </div>
 
-                <button id="btn-action" onclick="login()" class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition active:scale-95">Entrar</button>
+                <button id="btn-action" onclick="login()" class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition active:scale-95">
+                    Entrar
+                </button>
             </div>
             
             <p class="text-center mt-6 text-sm text-slate-500">
-                <button onclick="toggleAuthMode()" id="msg-toggle" class="text-blue-600 font-bold hover:underline">Criar nova conta</button>
+                <button onclick="toggleAuthMode()" id="msg-toggle" class="text-blue-600 font-bold hover:underline">Não tem conta? Crie grátis</button>
             </p>
         </div>
     </div>
 
-    <!-- 3. SISTEMA PRINCIPAL -->
+    <!-- ======================================================= -->
+    <!-- 3. SISTEMA PRINCIPAL (App) -->
+    <!-- ======================================================= -->
     <div id="app-screen" class="hidden bg-slate-50 min-h-screen pb-24 fade-enter flex-col">
+        
+        <!-- Header App -->
         <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
             <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white"><i data-lucide="grid" class="w-5 h-5"></i></div>
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+                        <i data-lucide="grid" class="w-5 h-5"></i>
+                    </div>
                     <div>
-                        <h1 class="font-bold text-slate-800 leading-none">Painel</h1>
-                        <p id="user-display" class="text-[10px] text-slate-500 font-medium uppercase tracking-wide mt-1">Carregando...</p>
+                        <h1 class="font-bold text-slate-800 leading-none text-lg">Painel</h1>
+                        <p id="user-display" class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-1">...</p>
                     </div>
                 </div>
-                <button onclick="logout()" class="text-slate-400 hover:text-red-500 transition p-2"><i data-lucide="log-out" class="w-5 h-5"></i></button>
+                <button onclick="logout()" class="text-slate-400 hover:text-red-500 transition p-2 bg-slate-50 rounded-lg hover:bg-red-50">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                </button>
             </div>
         </header>
 
         <main class="container mx-auto px-4 max-w-2xl mt-6 flex-grow">
-            <!-- Alerta de Índice -->
-            <div id="index-alert" class="hidden bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
-                <div class="flex">
-                    <div class="flex-shrink-0"><i data-lucide="alert-triangle" class="text-yellow-400"></i></div>
-                    <div class="ml-3">
-                        <p class="text-sm text-yellow-700">
-                            <strong>Atenção Admin:</strong> Para ver as ofertas enviadas, é necessário criar um índice no Firebase.
-                            <br>Abra o Console do navegador (F12), procure o erro vermelho e clique no link para criar.
-                        </p>
-                    </div>
+            
+            <!-- Alerta Index Firestore (Admin Only) -->
+            <div id="index-alert" class="hidden bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-4 flex items-start gap-3">
+                <i data-lucide="alert-triangle" class="text-yellow-500 w-5 h-5 mt-0.5"></i>
+                <div class="text-sm text-yellow-700">
+                    <strong>Configuração Necessária:</strong> Para ver "Minhas Ofertas", o Firebase exige um índice. 
+                    <br><span class="text-xs">Abra o Console (F12) e clique no link de erro para criar automaticamente.</span>
                 </div>
             </div>
 
-            <!-- FILTROS -->
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="font-bold text-slate-700">Itens</h3>
+            <!-- FILTROS GERAIS -->
+            <div class="flex items-center justify-between mb-6 bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex items-center gap-2 text-slate-700 font-bold px-2">
+                    <i data-lucide="filter" class="w-4 h-4"></i> Filtrar
+                </div>
                 <div class="relative">
-                    <select id="filtro-categoria" onchange="aplicarFiltro()" class="pl-3 pr-8 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 focus:outline-none focus:border-blue-500">
+                    <select id="filtro-categoria" onchange="aplicarFiltro()" class="pl-3 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 focus:outline-none focus:border-blue-500">
                         <option value="todos">Todas Categorias</option>
                         <option value="Alimentos">Alimentos</option>
                         <option value="Bebidas">Bebidas</option>
@@ -177,48 +228,58 @@
                 </div>
             </div>
 
-            <!-- VIEW GERENTE -->
+            <!-- ================= VIEW GERENTE ================= -->
             <div id="view-gerente" class="hidden space-y-6">
-                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                    <h2 id="form-title" class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <!-- Card de Criação -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+                    <h2 id="form-title" class="font-bold text-slate-800 mb-4 flex items-center gap-2 text-lg">
                         <i data-lucide="plus-circle" class="text-blue-600 w-5 h-5"></i> Novo Pedido
                     </h2>
                     
                     <input type="hidden" id="edit-id" value="">
 
-                    <div class="grid grid-cols-3 gap-3 mb-3">
+                    <div class="grid grid-cols-3 gap-3 mb-4">
                         <div class="col-span-2">
-                            <input type="text" id="produtoInput" placeholder="Ex: 10kg Arroz" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                            <label class="text-[10px] uppercase font-bold text-slate-400 ml-1">Produto</label>
+                            <input type="text" id="produtoInput" placeholder="Ex: 10kg Arroz" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
                         </div>
                         <div class="col-span-1">
-                            <select id="categoriaInput" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none">
-                                <option value="Outros">Categ.</option>
+                            <label class="text-[10px] uppercase font-bold text-slate-400 ml-1">Categoria</label>
+                            <select id="categoriaInput" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="Outros">Outros</option>
                                 <option value="Alimentos">Aliment.</option>
                                 <option value="Bebidas">Bebidas</option>
                                 <option value="Limpeza">Limpeza</option>
-                                <option value="Hortifruti">Horti.</option>
+                                <option value="Hortifruti">Hortifruti</option>
                             </select>
                         </div>
                     </div>
                     
-                    <div class="flex gap-2">
-                        <button id="btn-save-pedido" onclick="salvarPedido()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/20">
+                    <div class="flex gap-3">
+                        <button id="btn-save-pedido" onclick="salvarPedido()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/20 flex justify-center items-center gap-2">
                             Publicar Pedido
                         </button>
-                        <button id="btn-cancel-edit" onclick="cancelarEdicao()" class="hidden px-4 py-3 bg-slate-100 text-slate-500 rounded-xl font-bold hover:bg-slate-200">
+                        <button id="btn-cancel-edit" onclick="cancelarEdicao()" class="hidden px-5 py-3 bg-slate-100 text-slate-500 rounded-xl font-bold hover:bg-slate-200 transition">
                             Cancelar
                         </button>
                     </div>
                 </div>
                 
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest pl-2">Seus Pedidos Ativos</h3>
                 <div id="lista-gerente" class="space-y-4 pb-10"></div>
             </div>
 
-            <!-- VIEW FORNECEDOR -->
+            <!-- ================= VIEW FORNECEDOR ================= -->
             <div id="view-fornecedor" class="hidden space-y-6">
-                <div class="flex p-1 bg-slate-200 rounded-xl mb-4">
-                    <button onclick="mudarAbaForn('oportunidades')" id="tab-oportunidades" class="flex-1 py-2 rounded-lg text-sm font-bold bg-white shadow-sm text-blue-900 transition">Oportunidades</button>
-                    <button onclick="mudarAbaForn('minhas')" id="tab-minhas" class="flex-1 py-2 rounded-lg text-sm font-bold text-slate-500 hover:text-slate-700 transition">Minhas Ofertas</button>
+                <!-- Abas -->
+                <div class="flex p-1.5 bg-slate-200 rounded-xl mb-4">
+                    <button onclick="mudarAbaForn('oportunidades')" id="tab-oportunidades" class="flex-1 py-2.5 rounded-lg text-sm font-bold bg-white shadow-sm text-blue-900 transition flex items-center justify-center gap-2">
+                        <i data-lucide="search" class="w-4 h-4"></i> Oportunidades
+                    </button>
+                    <button onclick="mudarAbaForn('minhas')" id="tab-minhas" class="flex-1 py-2.5 rounded-lg text-sm font-bold text-slate-500 hover:text-slate-700 transition flex items-center justify-center gap-2">
+                        <i data-lucide="list" class="w-4 h-4"></i> Minhas Ofertas
+                    </button>
                 </div>
 
                 <div id="lista-fornecedor-todos" class="space-y-4 pb-10"></div>
@@ -228,30 +289,15 @@
         </main>
     </div>
 
-    <!-- RODAPÉ PROFISSIONAL -->
-    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-            <div>
-                <h4 class="font-bold text-slate-800">CotaçãoJá</h4>
-                <p class="text-xs text-slate-500 mt-1">Simplificando o comércio local.</p>
-                <a href="faq.html" class="text-xs text-blue-600 underline mt-2 block">Central de Ajuda</a>
-            </div>
-            
-            <div class="text-sm font-medium">
-                Desenvolvido por <a href="https://lucianodevfrontend.netlify.app/" target="_blank" class="text-blue-600 hover:text-blue-800 font-bold hover:underline transition">SantosCodes</a>
-            </div>
-        </div>
-    </footer>
-
     <!-- LOGICA E FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, setDoc, getDoc, updateDoc, deleteDoc, increment, serverTimestamp, collectionGroup, where, writeBatch } 
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, setDoc, getDoc, updateDoc, deleteDoc, increment, serverTimestamp, collectionGroup, where } 
         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-        // CONFIGURAÇÃO
+        // CONFIGURAÇÃO DO FIREBASE (Coloque suas chaves aqui se necessário, mas já estão no código anterior)
         const firebaseConfig = {
             apiKey: "AIzaSyAhPYUnom0B7vXOjqf5eyMzye8f-Mp97Yw",
             authDomain: "leilaoreverso-af6e1.firebaseapp.com",
@@ -264,14 +310,16 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        
         let currentUserData = null;
         let allPedidos = []; 
         let myOffers = [];
 
+        // Inicializa Ícones
         const initIcons = () => lucide.createIcons();
         window.addEventListener('load', initIcons);
 
-        // --- PWA INSTALL LOGIC ---
+        // --- PWA INSTALLATION ---
         let deferredPrompt;
         const btnInstall = document.getElementById('btn-install-app');
 
@@ -285,38 +333,29 @@
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    btnInstall.classList.add('hidden');
-                }
+                if (outcome === 'accepted') btnInstall.classList.add('hidden');
                 deferredPrompt = null;
             }
         });
 
-        // REGISTER SERVICE WORKER
+        // Service Worker Reg
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js')
             .then(reg => {
-                console.log('SW Registrado!', reg);
-                // Escutar mudanças de estado do SW para reload se necessário
                 reg.onupdatefound = () => {
                     const installingWorker = reg.installing;
                     installingWorker.onstatechange = () => {
-                        if (installingWorker.state === 'installed') {
-                            if (navigator.serviceWorker.controller) {
-                                console.log('Novo conteúdo disponível; por favor atualize.');
-                            } else {
-                                console.log('Conteúdo em cache para uso offline.');
-                            }
+                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('Nova versão disponível!');
+                            window.location.reload(); // Reload forçado suave para pegar atualização
                         }
                     };
                 };
             })
-            .catch(err => console.log('SW Falhou!', err));
+            .catch(err => console.log('SW Falhou', err));
         }
 
-        // --- NAVEGAÇÃO E UI ---
-        
-        // Controle do Toggle CPF/CNPJ
+        // --- UI & NAVEGAÇÃO ---
         window.toggleDocInput = () => {
             const isPf = document.querySelector('input[name="tipoPessoa"]:checked').value === 'pf';
             const cpfInput = document.getElementById('cpfInput');
@@ -352,7 +391,7 @@
             
             if(!isLoginMode) {
                 fields.classList.remove('hidden');
-                btn.innerText = "Criar Conta Grátis";
+                btn.innerText = "Criar Conta";
                 btn.onclick = cadastrar;
                 msg.innerText = "Já tenho conta";
             } else {
@@ -368,38 +407,28 @@
             const pass = document.getElementById('password').value;
             const nome = document.getElementById('nome').value;
             const tipo = document.getElementById('tipoUser').value;
-            
-            // Tratamento Whatsapp
             let zap = document.getElementById('whatsapp').value.replace(/\D/g, '');
             if(zap.length >= 10 && !zap.startsWith('55')) zap = '55' + zap;
 
-            // Tratamento CPF/CNPJ
+            // Doc Validation
             const tipoPessoa = document.querySelector('input[name="tipoPessoa"]:checked').value;
-            let docNum = '';
+            let docNum = (tipoPessoa === 'pf') ? 
+                document.getElementById('cpfInput').value.replace(/\D/g, '') : 
+                document.getElementById('cnpjInput').value.replace(/\D/g, '');
             
-            if (tipoPessoa === 'pf') {
-                docNum = document.getElementById('cpfInput').value.replace(/\D/g, '');
-                if (docNum.length !== 11) return alert("CPF inválido (deve ter 11 dígitos)");
-            } else {
-                docNum = document.getElementById('cnpjInput').value.replace(/\D/g, '');
-                if (docNum.length !== 14) return alert("CNPJ inválido (deve ter 14 dígitos)");
-            }
-            
-            if(!email || !pass || !nome || !zap || !docNum) return alert("Preencha todos os campos");
-            
+            if(!email || !pass || !nome || !zap || !docNum) return alert("Preencha todos os campos!");
+
             try {
                 const cred = await createUserWithEmailAndPassword(auth, email, pass);
                 await setDoc(doc(db, "users", cred.user.uid), { 
-                    nome, tipo, whatsapp: zap, email, 
-                    tipoPessoa, documento: docNum 
+                    nome, tipo, whatsapp: zap, email, tipoPessoa, documento: docNum 
                 });
             } catch (e) { alert("Erro: " + e.message); }
         }
 
         window.login = async () => {
-            try {
-                await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value);
-            } catch (e) { alert("Login inválido."); }
+            try { await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value); } 
+            catch (e) { alert("Login inválido."); }
         }
         window.logout = () => signOut(auth);
 
@@ -416,7 +445,7 @@
                 if (userDoc.exists()) {
                     currentUserData = userDoc.data();
                     currentUserData.uid = user.uid;
-                    document.getElementById('user-display').innerText = `${currentUserData.nome} • ${currentUserData.tipo.toUpperCase()}`;
+                    document.getElementById('user-display').innerText = `${currentUserData.nome} • ${currentUserData.tipo === 'gerente' ? 'LOJA' : 'FORNECEDOR'}`;
                     iniciarApp(currentUserData.tipo);
                 }
             } else {
@@ -429,7 +458,7 @@
             }
         });
 
-        // --- APP CORE ---
+        // --- CORE APP ---
         function iniciarApp(tipo) {
             const pedidosRef = collection(db, "pedidos");
             const q = query(pedidosRef, orderBy("createdAt", "desc"));
@@ -437,40 +466,33 @@
             document.getElementById('view-gerente').classList.add('hidden');
             document.getElementById('view-fornecedor').classList.add('hidden');
 
-            // 1. LISTENER DE PEDIDOS (Sempre Ativo)
+            // 1. Pedidos Listener
             onSnapshot(q, (snapshot) => {
                 allPedidos = [];
                 snapshot.forEach(doc => allPedidos.push({ id: doc.id, ...doc.data() }));
                 
-                if (tipo === 'gerente') {
-                    renderGerente();
-                } else {
-                    renderFornecedorOportunidades();
-                }
+                if (tipo === 'gerente') renderGerente();
+                else renderFornecedorOportunidades();
             });
 
             if (tipo === 'gerente') {
                 document.getElementById('view-gerente').classList.remove('hidden');
             } else {
                 document.getElementById('view-fornecedor').classList.remove('hidden');
-                // 2. LISTENER DE MINHAS OFERTAS (Essencial para pintar de verde o que já foi ofertado)
+                // 2. My Offers Listener
                 const myOffersQ = query(collectionGroup(db, 'ofertas'), where('fornecedorId', '==', currentUserData.uid));
                 
                 onSnapshot(myOffersQ, (snap) => {
                     myOffers = [];
                     snap.forEach(d => myOffers.push({ id: d.id, path: d.ref.path, ...d.data() }));
-                    
-                    // RE-RENDERIZA PARA ATUALIZAR STATUS VISUAL
                     renderFornecedorMinhas();
-                    renderFornecedorOportunidades();
+                    renderFornecedorOportunidades(); // Refresh UI to show Green Cards
                 }, (error) => {
-                    console.error("Erro Index:", error);
                     if (error.code === 'failed-precondition') document.getElementById('index-alert').classList.remove('hidden');
                 });
             }
         }
 
-        // --- FILTROS ---
         window.aplicarFiltro = () => {
             if (currentUserData.tipo === 'gerente') renderGerente();
             else renderFornecedorOportunidades();
@@ -478,85 +500,89 @@
 
         function filtrarDados(lista) {
             const categ = document.getElementById('filtro-categoria').value;
-            if (categ === 'todos') return lista;
-            return lista.filter(item => item.categoria === categ);
+            return (categ === 'todos') ? lista : lista.filter(item => item.categoria === categ);
         }
 
-        // --- RENDER GERENTE ---
+        // --- GERENTE RENDER ---
         function renderGerente() {
             const container = document.getElementById('lista-gerente');
             container.innerHTML = '';
             const filtrados = filtrarDados(allPedidos);
 
             if(filtrados.length === 0) {
-                container.innerHTML = '<div class="text-center text-slate-400 py-10">Nenhum pedido encontrado.</div>';
-                return;
+                container.innerHTML = `<div class="text-center text-slate-400 py-10 flex flex-col items-center"><i data-lucide="package-open" class="w-10 h-10 mb-2 opacity-50"></i><p>Nenhum pedido encontrado.</p></div>`;
+                initIcons(); return;
             }
 
             filtrados.forEach(data => {
                 container.innerHTML += `
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition relative group">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition relative group">
                         <div class="absolute top-4 right-4 flex gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
                             <button onclick="editarPedido('${data.id}', '${data.produto}', '${data.categoria || 'Outros'}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100"><i data-lucide="pencil" class="w-4 h-4"></i></button>
                             <button onclick="apagarPedido('${data.id}')" class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                         <div class="flex items-center gap-3 mb-3">
-                            <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded uppercase">${data.categoria || 'Geral'}</span>
+                            <span class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2 py-1 rounded-lg uppercase border border-indigo-100">${data.categoria || 'Geral'}</span>
                             <h4 class="font-bold text-slate-800 text-lg">${data.produto}</h4>
                         </div>
                         <div class="flex items-center justify-between mt-4">
-                            <span class="text-xs font-medium text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
-                                ${data.ofertasCount || 0} ofertas recebidas
+                            <span class="text-xs font-bold text-slate-500 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200 flex items-center gap-1">
+                                <i data-lucide="users" class="w-3 h-3"></i> ${data.ofertasCount || 0} ofertas
                             </span>
-                            <button onclick="verOfertas('${data.id}')" id="btn-ver-${data.id}" class="text-sm font-bold text-blue-600 hover:underline">
-                                Ver Ofertas
+                            <button onclick="verOfertas('${data.id}')" id="btn-ver-${data.id}" class="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition">
+                                Ver Ofertas <i data-lucide="chevron-down" class="w-4 h-4"></i>
                             </button>
                         </div>
-                        <div id="ofertas-${data.id}" class="hidden mt-4 space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-100"></div>
+                        <div id="ofertas-${data.id}" class="hidden mt-4 space-y-2 bg-slate-50 p-4 rounded-xl border border-slate-200"></div>
                     </div>
                 `;
             });
             initIcons();
         }
 
-        // --- RENDER FORNECEDOR ---
+        // --- FORNECEDOR RENDER ---
         function renderFornecedorOportunidades() {
             const container = document.getElementById('lista-fornecedor-todos');
             container.innerHTML = '';
             const filtrados = filtrarDados(allPedidos);
 
-            if(filtrados.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 mt-10">Nenhum pedido disponível.</div>'; return; }
+            if(filtrados.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 mt-10">Nenhum pedido disponível no momento.</div>'; return; }
 
             filtrados.forEach(data => {
-                // AQUI ESTÁ A LÓGICA DE COMPARAÇÃO
-                // Verifica se o ID deste pedido existe dentro do "path" de alguma das minhas ofertas
                 const ofertaJaFeita = myOffers.find(o => o.path.includes(data.id));
 
                 if (ofertaJaFeita) {
-                    // Card Verde (Já ofertado)
+                    // GREEN CARD (Já Ofertado)
                     container.innerHTML += `
-                        <div class="bg-green-50 p-5 rounded-2xl shadow-sm border border-green-200 opacity-80">
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-green-900 text-lg line-through decoration-slate-400">${data.produto}</h4>
-                                <span class="bg-green-200 text-green-800 text-xs px-2 py-1 rounded font-bold uppercase">Enviado</span>
+                        <div class="bg-emerald-50 p-5 rounded-2xl shadow-sm border border-emerald-200 opacity-90 relative overflow-hidden">
+                            <div class="absolute -right-4 -top-4 bg-emerald-100 w-16 h-16 rounded-full opacity-50"></div>
+                            <div class="flex justify-between items-center mb-2 relative z-10">
+                                <h4 class="font-bold text-emerald-900 text-lg line-through decoration-emerald-300 opacity-60">${data.produto}</h4>
+                                <span class="bg-emerald-200 text-emerald-800 text-[10px] px-2 py-1 rounded-full font-bold uppercase flex items-center gap-1">
+                                    <i data-lucide="check" class="w-3 h-3"></i> Enviado
+                                </span>
                             </div>
-                            <div class="text-sm text-green-700 font-medium flex items-center gap-2">
-                                <i data-lucide="check-circle" class="w-4 h-4"></i>
-                                Sua oferta: R$ ${ofertaJaFeita.valor.toFixed(2)}
+                            <div class="text-sm text-emerald-700 font-bold flex items-center gap-2 mt-2">
+                                Sua oferta: <span class="text-lg">R$ ${ofertaJaFeita.valor.toFixed(2)}</span>
                             </div>
                         </div>
                     `;
                 } else {
-                    // Card Padrão (Pendente)
+                    // STANDARD CARD (Pendente)
                     container.innerHTML += `
                         <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-orange-500 hover:shadow-md transition">
-                            <div class="flex justify-between mb-3">
+                            <div class="flex justify-between mb-4">
                                 <h4 class="font-bold text-slate-800 text-lg">${data.produto}</h4>
                                 <span class="text-[10px] font-bold uppercase bg-slate-100 px-2 py-1 rounded text-slate-500 h-fit">${data.categoria || 'Geral'}</span>
                             </div>
                             <div class="flex gap-2">
-                                <input type="number" id="valor-${data.id}" placeholder="Preço (R$)" class="flex-1 p-3 border border-slate-200 rounded-xl text-sm outline-none focus:border-orange-500">
-                                <button onclick="enviarOferta('${data.id}')" class="bg-orange-500 text-white px-5 rounded-xl font-bold shadow hover:bg-orange-600 transition">Enviar</button>
+                                <div class="relative flex-1">
+                                    <span class="absolute left-3 top-3 text-slate-400 text-sm font-bold">R$</span>
+                                    <input type="number" id="valor-${data.id}" class="w-full pl-8 p-3 border border-slate-200 rounded-xl text-sm outline-none focus:border-orange-500 font-bold text-slate-700" placeholder="0,00">
+                                </div>
+                                <button onclick="enviarOferta('${data.id}')" class="bg-orange-500 text-white px-5 rounded-xl font-bold shadow hover:bg-orange-600 transition flex items-center gap-1">
+                                    <i data-lucide="send" class="w-4 h-4"></i>
+                                </button>
                             </div>
                         </div>
                     `;
@@ -568,21 +594,25 @@
         function renderFornecedorMinhas() {
             const container = document.getElementById('lista-fornecedor-minhas');
             container.innerHTML = '';
-            if(myOffers.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 mt-10">Você ainda não fez ofertas.<br>Verifique se o alerta de índice apareceu.</div>'; return; }
+            if(myOffers.length === 0) { container.innerHTML = '<div class="text-center text-slate-400 mt-10">Você ainda não fez ofertas.</div>'; return; }
 
             myOffers.forEach(offer => {
                 const pedidoId = offer.path.split('/')[1];
                 const produtoRelacionado = allPedidos.find(p => p.id === pedidoId);
-                const nomeProduto = produtoRelacionado ? produtoRelacionado.produto : "Pedido encerrado";
+                const nomeProduto = produtoRelacionado ? produtoRelacionado.produto : "Pedido Encerrado/Indisponível";
+                
                 container.innerHTML += `
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-3 flex justify-between items-center">
                         <div>
-                            <div class="text-xs text-slate-400 mb-1">Para: ${nomeProduto}</div>
-                            <div class="font-bold text-green-600 text-xl flex items-center gap-2">R$ <input type="number" id="edit-val-${offer.id}" value="${offer.valor}" class="w-24 border-b border-slate-300 focus:outline-none focus:border-green-500 bg-transparent"></div>
+                            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1">Oferta para:</div>
+                            <div class="text-sm font-bold text-slate-700 mb-1">${nomeProduto}</div>
+                            <div class="font-bold text-green-600 text-xl flex items-center gap-1">
+                                R$ <input type="number" id="edit-val-${offer.id}" value="${offer.valor}" class="w-24 border-b border-dashed border-green-300 focus:outline-none focus:border-green-600 bg-transparent text-green-700">
+                            </div>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="atualizarMinhaOferta('${offer.path}', '${offer.id}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100"><i data-lucide="save" class="w-4 h-4"></i></button>
-                            <button onclick="apagarMinhaOferta('${offer.path}', '${pedidoId}')" class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            <button onclick="atualizarMinhaOferta('${offer.path}', '${offer.id}')" class="p-2.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition"><i data-lucide="save" class="w-4 h-4"></i></button>
+                            <button onclick="apagarMinhaOferta('${offer.path}', '${pedidoId}')" class="p-2.5 bg-red-50 text-red-500 rounded-lg hover:bg-red-100 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                     </div>
                 `;
@@ -590,127 +620,70 @@
             initIcons();
         }
 
-        // --- CRUD ACTIONS ---
+        // --- ACTIONS ---
         window.salvarPedido = async () => {
-            const inp = document.getElementById('produtoInput');
-            const cat = document.getElementById('categoriaInput');
-            const editId = document.getElementById('edit-id').value;
-            const btn = document.getElementById('btn-save-pedido');
-
-            if(!inp.value) return alert("Digite o nome do produto");
-            btn.disabled = true;
-
-            try {
-                if (editId) {
-                    await updateDoc(doc(db, "pedidos", editId), { produto: inp.value, categoria: cat.value });
-                    alert("Pedido atualizado!");
-                    cancelarEdicao();
-                } else {
-                    await addDoc(collection(db, "pedidos"), {
-                        produto: inp.value, categoria: cat.value, createdAt: serverTimestamp(), status: 'aberto', ofertasCount: 0
-                    });
-                }
-                inp.value = '';
-            } catch(e) { console.error(e); alert("Erro ao salvar."); }
-            finally { btn.disabled = false; }
+            const inp = document.getElementById('produtoInput'); const cat = document.getElementById('categoriaInput'); const editId = document.getElementById('edit-id').value; const btn = document.getElementById('btn-save-pedido');
+            if(!inp.value) return alert("Digite o nome do produto"); btn.disabled = true; btn.innerText = "Salvando...";
+            try { if (editId) { await updateDoc(doc(db, "pedidos", editId), { produto: inp.value, categoria: cat.value }); alert("Atualizado!"); cancelarEdicao(); }
+            else { await addDoc(collection(db, "pedidos"), { produto: inp.value, categoria: cat.value, createdAt: serverTimestamp(), status: 'aberto', ofertasCount: 0 }); } inp.value = ''; } catch(e) { console.error(e); alert("Erro ao salvar."); } finally { btn.disabled = false; btn.innerText = "Publicar Pedido"; }
         }
 
         window.editarPedido = (id, prod, cat) => {
-            document.getElementById('produtoInput').value = prod;
-            document.getElementById('categoriaInput').value = cat;
-            document.getElementById('edit-id').value = id;
+            document.getElementById('produtoInput').value = prod; document.getElementById('categoriaInput').value = cat; document.getElementById('edit-id').value = id;
             document.getElementById('form-title').innerHTML = '<i data-lucide="pencil" class="text-orange-500 w-5 h-5"></i> Editando Pedido';
-            document.getElementById('btn-save-pedido').innerText = "Atualizar Pedido";
-            document.getElementById('btn-save-pedido').classList.replace('bg-blue-600', 'bg-orange-500');
-            document.getElementById('btn-cancel-edit').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            initIcons();
+            const btn = document.getElementById('btn-save-pedido'); btn.innerText = "Salvar Alterações"; btn.classList.replace('bg-blue-600', 'bg-orange-500'); btn.classList.replace('hover:bg-blue-700', 'hover:bg-orange-600');
+            document.getElementById('btn-cancel-edit').classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); initIcons();
         }
 
         window.cancelarEdicao = () => {
-            document.getElementById('produtoInput').value = '';
-            document.getElementById('edit-id').value = '';
-            document.getElementById('categoriaInput').value = 'Outros';
+            document.getElementById('produtoInput').value = ''; document.getElementById('edit-id').value = ''; document.getElementById('categoriaInput').value = 'Outros';
             document.getElementById('form-title').innerHTML = '<i data-lucide="plus-circle" class="text-blue-600 w-5 h-5"></i> Novo Pedido';
-            document.getElementById('btn-save-pedido').innerText = "Publicar Pedido";
-            document.getElementById('btn-save-pedido').classList.replace('bg-orange-500', 'bg-blue-600');
-            document.getElementById('btn-cancel-edit').classList.add('hidden');
-            initIcons();
+            const btn = document.getElementById('btn-save-pedido'); btn.innerText = "Publicar Pedido"; btn.classList.replace('bg-orange-500', 'bg-blue-600'); btn.classList.replace('hover:bg-orange-600', 'hover:bg-blue-700');
+            document.getElementById('btn-cancel-edit').classList.add('hidden'); initIcons();
         }
 
-        window.apagarPedido = async (id) => {
-            if(confirm("Tem certeza?")) await deleteDoc(doc(db, "pedidos", id));
-        }
+        window.apagarPedido = async (id) => { if(confirm("Tem certeza?")) await deleteDoc(doc(db, "pedidos", id)); }
 
         window.verOfertas = (id) => {
-            const div = document.getElementById(`ofertas-${id}`);
-            const btn = document.getElementById(`btn-ver-${id}`);
-            if(!div.classList.contains('hidden')) {
-                div.classList.add('hidden'); btn.innerText = "Ver Ofertas"; return;
-            }
-            div.classList.remove('hidden'); btn.innerText = "Ocultar";
-            div.innerHTML = '<p class="text-xs text-center text-slate-400">Carregando...</p>';
-            
+            const div = document.getElementById(`ofertas-${id}`); const btn = document.getElementById(`btn-ver-${id}`);
+            if(!div.classList.contains('hidden')) { div.classList.add('hidden'); btn.innerHTML = `Ver Ofertas <i data-lucide="chevron-down" class="w-4 h-4"></i>`; initIcons(); return; }
+            div.classList.remove('hidden'); btn.innerHTML = `Ocultar <i data-lucide="chevron-up" class="w-4 h-4"></i>`; div.innerHTML = '<p class="text-xs text-center text-slate-400 animate-pulse">Carregando...</p>';
             const q = query(collection(db, "pedidos", id, "ofertas"), orderBy("valor", "asc"));
             onSnapshot(q, (snap) => {
-                div.innerHTML = '';
-                if(snap.empty) { div.innerHTML = '<p class="text-xs text-slate-400 text-center">Sem ofertas.</p>'; return; }
-                snap.forEach(o => {
-                    const off = o.data();
-                    div.innerHTML += `
-                        <div class="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border border-slate-100">
-                            <div><div class="font-bold text-green-600">R$ ${off.valor.toFixed(2)}</div><div class="text-[10px] text-slate-500 uppercase">${off.fornecedorNome}</div></div>
-                            <a href="https://wa.me/${off.whatsapp}?text=Olá ${off.fornecedorNome}, aceito a oferta de R$${off.valor} para o pedido." target="_blank"
-                               class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition flex items-center gap-1 text-xs font-bold"><i data-lucide="message-circle" class="w-3 h-3"></i> WhatsApp</a>
-                        </div>
-                    `;
-                });
-                initIcons();
+                div.innerHTML = ''; if(snap.empty) { div.innerHTML = '<p class="text-xs text-slate-400 text-center">Nenhuma oferta recebida.</p>'; return; }
+                snap.forEach(o => { const off = o.data(); div.innerHTML += `
+                    <div class="flex justify-between items-center bg-white p-3 rounded-xl shadow-sm border border-slate-100 mb-2">
+                        <div><div class="font-bold text-green-600 text-lg">R$ ${off.valor.toFixed(2)}</div><div class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">${off.fornecedorNome}</div></div>
+                        <a href="https://wa.me/${off.whatsapp}?text=Olá ${off.fornecedorNome}, aceito a oferta de R$${off.valor}." target="_blank" class="bg-green-500 text-white p-2.5 rounded-lg hover:bg-green-600 transition shadow-lg shadow-green-500/30"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+                    </div>`; 
+                }); initIcons();
             })
         }
 
         window.mudarAbaForn = (aba) => {
-            const listaTodos = document.getElementById('lista-fornecedor-todos');
-            const listaMinhas = document.getElementById('lista-fornecedor-minhas');
-            const btnOp = document.getElementById('tab-oportunidades');
-            const btnMy = document.getElementById('tab-minhas');
-
+            const listaTodos = document.getElementById('lista-fornecedor-todos'); const listaMinhas = document.getElementById('lista-fornecedor-minhas');
+            const btnOp = document.getElementById('tab-oportunidades'); const btnMy = document.getElementById('tab-minhas');
             if (aba === 'oportunidades') {
                 listaTodos.classList.remove('hidden'); listaMinhas.classList.add('hidden');
                 btnOp.classList.add('bg-white', 'shadow-sm', 'text-blue-900'); btnOp.classList.remove('text-slate-500');
                 btnMy.classList.remove('bg-white', 'shadow-sm', 'text-blue-900'); btnMy.classList.add('text-slate-500');
-                renderFornecedorOportunidades();
             } else {
                 listaTodos.classList.add('hidden'); listaMinhas.classList.remove('hidden');
                 btnMy.classList.add('bg-white', 'shadow-sm', 'text-blue-900'); btnMy.classList.remove('text-slate-500');
                 btnOp.classList.remove('bg-white', 'shadow-sm', 'text-blue-900'); btnOp.classList.add('text-slate-500');
-                renderFornecedorMinhas();
             }
         }
 
         window.enviarOferta = async (pedidoId) => {
-            const val = document.getElementById(`valor-${pedidoId}`).value;
-            if(!val) return;
-            try {
-                await addDoc(collection(db, "pedidos", pedidoId, "ofertas"), {
-                    valor: parseFloat(val), fornecedorId: currentUserData.uid, fornecedorNome: currentUserData.nome, whatsapp: currentUserData.whatsapp, createdAt: serverTimestamp()
-                });
-                await updateDoc(doc(db, "pedidos", pedidoId), { ofertasCount: increment(1) });
-                alert("Oferta enviada!"); document.getElementById(`valor-${pedidoId}`).value = '';
-            } catch(e) { console.error(e); alert("Erro ao enviar."); }
+            const val = document.getElementById(`valor-${pedidoId}`).value; if(!val) return;
+            try { await addDoc(collection(db, "pedidos", pedidoId, "ofertas"), { valor: parseFloat(val), fornecedorId: currentUserData.uid, fornecedorNome: currentUserData.nome, whatsapp: currentUserData.whatsapp, createdAt: serverTimestamp() }); await updateDoc(doc(db, "pedidos", pedidoId), { ofertasCount: increment(1) }); alert("Oferta enviada com sucesso!"); } catch(e) { console.error(e); alert("Erro ao enviar."); }
         }
 
-        window.atualizarMinhaOferta = async (path, elementId) => {
-            const novoValor = document.getElementById(`edit-val-${elementId}`).value;
-            const parts = path.split('/');
-            try { await updateDoc(doc(db, parts[0], parts[1], parts[2], parts[3]), { valor: parseFloat(novoValor) }); alert("Preço atualizado!"); } catch(e) { alert("Erro ao atualizar."); }
-        }
+        window.atualizarMinhaOferta = async (path, elementId) => { const novoValor = document.getElementById(`edit-val-${elementId}`).value; const parts = path.split('/'); try { await updateDoc(doc(db, parts[0], parts[1], parts[2], parts[3]), { valor: parseFloat(novoValor) }); alert("Preço atualizado!"); } catch(e) { alert("Erro ao atualizar."); } }
+        window.apagarMinhaOferta = async (path, parentId) => { if(!confirm("Remover esta oferta?")) return; const parts = path.split('/'); try { await deleteDoc(doc(db, parts[0], parts[1], parts[2], parts[3])); await updateDoc(doc(db, "pedidos", parentId), { ofertasCount: increment(-1) }); } catch(e) { alert("Erro ao apagar."); } }
 
-        window.apagarMinhaOferta = async (path, parentId) => {
-            if(!confirm("Remover esta oferta?")) return;
-            const parts = path.split('/');
-            try { await deleteDoc(doc(db, parts[0], parts[1], parts[2], parts[3])); await updateDoc(doc(db, "pedidos", parentId), { ofertasCount: increment(-1) }); } catch(e) { alert("Erro ao apagar."); }
-        }
+        // Atribui funções globais
+        window.salvarPedido = salvarPedido; window.editarPedido = editarPedido; window.cancelarEdicao = cancelarEdicao; window.apagarPedido = apagarPedido; window.verOfertas = verOfertas; window.mudarAbaForn = mudarAbaForn; window.enviarOferta = enviarOferta; window.atualizarMinhaOferta = atualizarMinhaOferta; window.apagarMinhaOferta = apagarMinhaOferta;
     </script>
 </body>
 </html>
