@@ -3,7 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CotaçãoJá - Sistema de Compras</title>
+    <title>CotaçãoJá | Conectando Lojas e Fornecedores em Tempo Real</title>
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Plataforma gratuita que conecta gerentes de lojas a fornecedores. Receba pedidos de cotação, envie sua oferta e feche negócio diretamente pelo WhatsApp."
+    />
+    <link rel="canonical" href="https://SEU_DOMINIO.com/index.html" />
+    <!-- ⚠️ SUBSTITUA PELO SEU DOMÍNIO REAL -->
+
+    <!-- Open Graph (para Facebook, WhatsApp, etc.) -->
+    <meta
+      property="og:title"
+      content="CotaçãoJá | Conectando Lojas e Fornecedores"
+    />
+    <meta
+      property="og:description"
+      content="A plataforma que conecta gerentes de loja a fornecedores em tempo real. Cotação simples, direta e sem intermediários."
+    />
+    <meta
+      property="og:image"
+      content="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"
+    />
+    <meta property="og:url" content="https://SEU_DOMINIO.com/index.html" />
+    <!-- ⚠️ SUBSTITUA PELO SEU DOMÍNIO REAL -->
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="CotaçãoJá | Conectando Lojas e Fornecedores"
+    />
+    <meta
+      name="twitter:description"
+      content="A plataforma que conecta gerentes de loja a fornecedores em tempo real. Cotação simples, direta e sem intermediários."
+    />
+    <meta
+      name="twitter:image"
+      content="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"
+    />
 
     <!-- Scripts e Estilos -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -243,17 +283,26 @@
           </div>
 
           <!-- Botões de Navegação do Carrossel -->
-          <div class="absolute top-1/2 left-0 -translate-y-1/2 z-10 hidden md:block">
-              <button id="carousel-prev" class="bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-md border border-slate-100 text-slate-500 hover:text-blue-600 hover:bg-white transition">
-                  <i data-lucide="chevron-left" class="w-6 h-6"></i>
-              </button>
+          <div
+            class="absolute top-1/2 left-0 -translate-y-1/2 z-10 hidden md:block"
+          >
+            <button
+              id="carousel-prev"
+              class="bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-md border border-slate-100 text-slate-500 hover:text-blue-600 hover:bg-white transition"
+            >
+              <i data-lucide="chevron-left" class="w-6 h-6"></i>
+            </button>
           </div>
-          <div class="absolute top-1/2 right-0 -translate-y-1/2 z-10 hidden md:block">
-              <button id="carousel-next" class="bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-md border border-slate-100 text-slate-500 hover:text-blue-600 hover:bg-white transition">
-                  <i data-lucide="chevron-right" class="w-6 h-6"></i>
-              </button>
+          <div
+            class="absolute top-1/2 right-0 -translate-y-1/2 z-10 hidden md:block"
+          >
+            <button
+              id="carousel-next"
+              class="bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-md border border-slate-100 text-slate-500 hover:text-blue-600 hover:bg-white transition"
+            >
+              <i data-lucide="chevron-right" class="w-6 h-6"></i>
+            </button>
           </div>
-
 
           <!-- Carrossel -->
           <div
@@ -927,19 +976,19 @@
 
       // --- CONTROLES DO CARROSSEL DE DEPOIMENTOS ---
       function setupCarouselControls() {
-        const carousel = document.getElementById('depoimentos-carousel');
-        const prevBtn = document.getElementById('carousel-prev');
-        const nextBtn = document.getElementById('carousel-next');
+        const carousel = document.getElementById("depoimentos-carousel");
+        const prevBtn = document.getElementById("carousel-prev");
+        const nextBtn = document.getElementById("carousel-next");
         if (!carousel || !prevBtn || !nextBtn) return;
 
         const scrollAmount = 324; // Largura aproximada de um card + gap
 
-        nextBtn.addEventListener('click', () => {
-          carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        nextBtn.addEventListener("click", () => {
+          carousel.scrollBy({ left: scrollAmount, behavior: "smooth" });
         });
 
-        prevBtn.addEventListener('click', () => {
-          carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        prevBtn.addEventListener("click", () => {
+          carousel.scrollBy({ left: -scrollAmount, behavior: "smooth" });
         });
       }
 

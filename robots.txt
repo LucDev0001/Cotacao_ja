@@ -1,0 +1,9 @@
+# Permite que todos os robôs acessem o site
+User-agent: *
+Allow: /
+
+# Bloqueia o acesso à pasta de administração
+Disallow: /admin/
+
+# Localização do Sitemap
+Sitemap: https://cotacaoja.netlify.app//sitemap.xml
