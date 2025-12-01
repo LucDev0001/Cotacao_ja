@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cotacao-app-v3-force-update'; // Mudei a versão para forçar atualização
+const CACHE_NAME = 'cotacao-app-v4-force-update'; // Mudei a versão para forçar atualização
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
