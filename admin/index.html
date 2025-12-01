@@ -112,6 +112,12 @@
           >
             <i data-lucide="users" class="w-5 h-5"></i> Usuários
           </button>
+          <button
+            onclick="showView('pedidos')"
+            class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold hover:bg-slate-700 hover:text-white transition"
+          >
+            <i data-lucide="shopping-cart" class="w-5 h-5"></i> Pedidos
+          </button>
         </nav>
         <div class="mt-auto">
           <button
@@ -225,12 +231,36 @@
               <thead class="bg-slate-50 text-slate-500 uppercase font-bold">
                 <tr>
                   <th class="p-4">Nome</th>
-                  <th class="p-4">Email</th>
+                  <th class="p-4">E-mail</th>
                   <th class="p-4">Tipo</th>
                   <th class="p-4">WhatsApp</th>
+                  <th class="p-4">Data Cadastro</th>
                 </tr>
               </thead>
               <tbody id="users-table-body" class="divide-y divide-slate-100">
+                <!-- Conteúdo dinâmico -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- VIEW: PEDIDOS -->
+        <div id="view-pedidos" class="admin-view hidden fade-enter">
+          <h1 class="text-3xl font-extrabold text-slate-900 mb-8">
+            Pedidos de Cotação
+          </h1>
+          <div
+            class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"
+          >
+            <table class="w-full text-sm text-left">
+              <thead class="bg-slate-50 text-slate-500 uppercase font-bold">
+                <tr>
+                  <th class="p-4">Data</th>
+                  <th class="p-4">Gerente</th>
+                  <th class="p-4">Itens</th>
+                </tr>
+              </thead>
+              <tbody id="pedidos-table-body" class="divide-y divide-slate-100">
                 <tr>
                   <td colspan="4" class="p-4 text-center text-slate-400">
                     Carregando...
@@ -256,6 +286,7 @@
         doc,
         updateDoc,
         deleteDoc,
+        orderBy,
         getCountFromServer,
       } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
       import {
@@ -339,32 +370,44 @@
       function initAdminPanel() {
         loadStats();
         loadDepoimentos();
+        loadPedidos();
         loadUsers();
         loadCharts();
         lucide.createIcons();
       }
 
       // --- DADOS ---
-      async function loadStats() {
-        try {
-          const uSnap = await getCountFromServer(collection(db, "users"));
-          document.getElementById("stat-users").innerText = uSnap.data().count;
+      function loadStats() {
+        // Usuários
+        onSnapshot(
+          collection(db, "users"),
+          (snap) => {
+            document.getElementById("stat-users").innerText = snap.size;
+          },
+          (e) => console.error("Erro stat usuários:", e.message)
+        );
 
-          const pSnap = await getCountFromServer(collection(db, "pedidos"));
-          document.getElementById("stat-pedidos").innerText =
-            pSnap.data().count;
+        // Pedidos
+        onSnapshot(
+          collection(db, "pedidos"),
+          (snap) => {
+            document.getElementById("stat-pedidos").innerText = snap.size;
+          },
+          (e) => console.error("Erro stat pedidos:", e.message)
+        );
 
-          const dSnap = await getCountFromServer(
-            query(
-              collection(db, "depoimentos"),
-              where("status", "==", "pendente")
-            )
-          );
-          document.getElementById("stat-depoimentos").innerText =
-            dSnap.data().count;
-        } catch (e) {
-          console.error("Erro ao carregar stats:", e.message);
-        }
+        // Depoimentos Pendentes
+        const qDepoimentos = query(
+          collection(db, "depoimentos"),
+          where("status", "==", "pendente")
+        );
+        onSnapshot(
+          qDepoimentos,
+          (snap) => {
+            document.getElementById("stat-depoimentos").innerText = snap.size;
+          },
+          (e) => console.error("Erro stat depoimentos:", e.message)
+        );
       }
 
       function loadDepoimentos() {
@@ -414,12 +457,48 @@
         );
       }
 
+      function loadPedidos() {
+        const tbody = document.getElementById("pedidos-table-body");
+        const q = query(collection(db, "pedidos"), orderBy("criadoEm", "desc"));
+
+        onSnapshot(
+          q,
+          (snap) => {
+            tbody.innerHTML = "";
+            if (snap.empty) {
+              tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-400">Nenhum pedido encontrado.</td></tr>`;
+              return;
+            }
+            snap.forEach((docSnap) => {
+              const p = docSnap.data();
+              const dataPedido =
+                p.criadoEm?.toDate().toLocaleDateString("pt-BR") || "N/A";
+              const itens = p.itens
+                .map((item) => `${item.quantidade}x ${item.produto}`)
+                .join(", ");
+
+              tbody.innerHTML += `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-4 text-slate-500">${dataPedido}</td>
+                    <td class="p-4 font-bold text-slate-700">${
+                      p.usuarioNome || "-"
+                    }</td>
+                    <td class="p-4 text-slate-600 text-xs">${itens}</td>
+                </tr>`;
+            });
+          },
+          (error) => {
+            console.error("Erro no listener de pedidos:", error.message);
+            tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-red-500">Erro ao carregar pedidos.</td></tr>`;
+          }
+        );
+      }
+
       function loadUsers() {
         const tbody = document.getElementById("users-table-body");
         onSnapshot(
-          query(collection(db, "users")),
+          query(collection(db, "users"), orderBy("criadoEm", "desc")),
           (snap) => {
-            // Esta query pode falhar se as regras não permitirem 'list'
             tbody.innerHTML = "";
             snap.forEach((docSnap) => {
               const u = docSnap.data();
@@ -428,7 +507,7 @@
                         <td class="p-4 font-bold text-slate-700">${
                           u.nome || "-"
                         }</td>
-                        <td class="p-4 text-slate-500">${u.email}</td>
+                        <td class="p-4 text-slate-500">${u.email || "-"}</td>
                         <td class="p-4"><span class="px-2 py-1 rounded text-xs font-bold uppercase ${
                           u.tipo === "gerente"
                             ? "bg-blue-100 text-blue-700"
@@ -437,37 +516,95 @@
                         <td class="p-4 text-slate-400 font-mono text-xs">${
                           u.whatsapp || "-"
                         }</td>
+                        <td class="p-4 text-slate-400 text-xs">${
+                          u.criadoEm?.toDate().toLocaleDateString("pt-BR") ||
+                          "-"
+                        }</td>
                     </tr>`;
             });
           },
           (error) => {
             console.error("Erro no listener de usuários:", error.message);
-            tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500">Erro ao carregar usuários. Verifique as permissões.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-500">Erro ao carregar usuários. Verifique as permissões.</td></tr>`;
           }
         );
       }
 
+      // Variáveis para armazenar instâncias dos gráficos
+      let usersChartInstance = null;
+      let pedidosChartInstance = null;
+
       async function loadCharts() {
-        const users = await getDocs(collection(db, "users"));
-        const pedidos = await getDocs(collection(db, "pedidos"));
+        // Usando onSnapshot para atualizar os gráficos em tempo real
+        onSnapshot(collection(db, "users"), (snap) => {
+          const dataByMonth = groupDataByMonth(snap);
+          updateChart(
+            "usersChart",
+            "line",
+            dataByMonth,
+            "Usuários",
+            "#3b82f6",
+            "rgba(59, 130, 246, 0.1)"
+          );
+        });
 
-        // Simples contagem por mês (simulação para MVP)
-        const labels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"];
-        const dataUsers = [0, 2, 5, 8, 12, users.size];
-        const dataPedidos = [0, 5, 15, 20, 35, pedidos.size];
+        onSnapshot(collection(db, "pedidos"), (snap) => {
+          const dataByMonth = groupDataByMonth(snap);
+          updateChart("pedidosChart", "bar", dataByMonth, "Pedidos", "#22c55e");
+        });
+      }
 
-        new Chart(document.getElementById("usersChart"), {
+      function groupDataByMonth(snapshot) {
+        const months = [
+          "Jan",
+          "Fev",
+          "Mar",
+          "Abr",
+          "Mai",
+          "Jun",
+          "Jul",
+          "Ago",
+          "Set",
+          "Out",
+          "Nov",
+          "Dez",
+        ];
+        const counts = Array(12).fill(0);
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.criadoEm && data.criadoEm.toDate) {
+            const month = data.criadoEm.toDate().getMonth();
+            counts[month]++;
+          }
+        });
+        return { labels: months, data: counts };
+      }
+
+      function updateChart(canvasId, type, chartData, label, color, bgColor) {
+        const ctx = document.getElementById(canvasId).getContext("2d");
+        let chartInstance =
+          canvasId === "usersChart" ? usersChartInstance : pedidosChartInstance;
+
+        if (chartInstance) {
+          chartInstance.data.labels = chartData.labels;
+          chartInstance.data.datasets[0].data = chartData.data;
+          chartInstance.update();
+          return;
+        }
+
+        const newChart = new Chart(ctx, {
           type: "line",
           data: {
-            labels: labels,
+            labels: chartData.labels,
             datasets: [
               {
-                label: "Usuários",
-                data: dataUsers,
-                borderColor: "#3b82f6",
+                label: label,
+                data: chartData.data,
+                borderColor: color,
                 tension: 0.4,
                 fill: true,
-                backgroundColor: "rgba(59, 130, 246, 0.1)",
+                backgroundColor: bgColor,
+                borderRadius: type === "bar" ? 4 : undefined,
               },
             ],
           },
@@ -477,35 +614,20 @@
           },
         });
 
-        new Chart(document.getElementById("pedidosChart"), {
-          type: "bar",
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: "Pedidos",
-                data: dataPedidos,
-                backgroundColor: "#22c55e",
-                borderRadius: 4,
-              },
-            ],
-          },
-          options: {
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true } },
-          },
-        });
+        if (canvasId === "usersChart") {
+          usersChartInstance = newChart;
+        } else {
+          pedidosChartInstance = newChart;
+        }
       }
 
       // Funções globais
       window.aprovarDepoimento = async (id) => {
-        await updateDoc(doc(db, "depoimentos", id), { status: "aprovado" });
-        loadStats();
+        await updateDoc(doc(db, "depoimentos", id), { status: "aprovado" }); // O onSnapshot de stats cuidará da atualização
       };
       window.rejeitarDepoimento = async (id) => {
         if (confirm("Apagar?")) {
           await deleteDoc(doc(db, "depoimentos", id));
-          loadStats();
         }
       };
 
